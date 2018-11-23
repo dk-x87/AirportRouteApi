@@ -1,0 +1,5 @@
+D:\fly\AirportRouteApi\AirportRouteApi
+--output-path=obj\Any CPU\Release\netcoreapp2.0\
+--application-name=AirportRouteApi
+--content-root=D:\fly\AirportRouteApi\AirportRouteApi
+--file=

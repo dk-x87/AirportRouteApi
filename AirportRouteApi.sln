@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2027
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AirportRouteApi", "AirportRouteApi\AirportRouteApi.csproj", "{8B12ECB5-C25C-416C-824C-A6847DDE033E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AirportRouteTest", "AirportRouteTest\AirportRouteTest.csproj", "{39F8A52C-F64B-4775-B08E-65F2D181507F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8B12ECB5-C25C-416C-824C-A6847DDE033E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B12ECB5-C25C-416C-824C-A6847DDE033E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B12ECB5-C25C-416C-824C-A6847DDE033E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B12ECB5-C25C-416C-824C-A6847DDE033E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39F8A52C-F64B-4775-B08E-65F2D181507F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39F8A52C-F64B-4775-B08E-65F2D181507F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39F8A52C-F64B-4775-B08E-65F2D181507F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39F8A52C-F64B-4775-B08E-65F2D181507F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {436FA649-43EF-495F-8226-29CED0C8C0EF}
+	EndGlobalSection
+EndGlobal
