@@ -20,30 +20,16 @@ namespace AirportRouteApi.BL
 
         public async Task<string> TrySetTask(string from, string to, string userAgent, string remoteAddress)
         {
-            try
-            {
-                var tokenSource = new CancellationTokenSource();
-                CancellationToken token = tokenSource.Token;
-                ConcurrentRoute concurrentRoute = new ConcurrentRoute() { SrcAirport = from, DestAirport = to, UserAgent = userAgent, RemoteAddress = remoteAddress, Token = token};
-                return await TryGetRoutes(concurrentRoute);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            var tokenSource = new CancellationTokenSource();
+            CancellationToken token = tokenSource.Token;
+            ConcurrentRoute concurrentRoute = new ConcurrentRoute() { SrcAirport = from, DestAirport = to, UserAgent = userAgent, RemoteAddress = remoteAddress, Token = token};
+            return await TryGetRoutes(concurrentRoute);
         }
 
         public string CancelTask(string from, string to, string userAgent, string remoteAddress)
         {
-            try
-            {
-                ConcurrentRoute concurrentRoute = new ConcurrentRoute() { SrcAirport = from, DestAirport = to, UserAgent = userAgent, RemoteAddress = remoteAddress };
-                return TryCancelTask(concurrentRoute); 
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            ConcurrentRoute concurrentRoute = new ConcurrentRoute() { SrcAirport = from, DestAirport = to, UserAgent = userAgent, RemoteAddress = remoteAddress };
+            return TryCancelTask(concurrentRoute); 
         }
 
         public static int ProcessingsTasksCount()
@@ -54,36 +40,54 @@ namespace AirportRouteApi.BL
 
         private async Task<string> TryGetRoutes(ConcurrentRoute concurrentRoute)
         {
-            concurrentDictionary.TryAdd(concurrentRoute, concurrentRoute.Token);
-
-            string error = ValidateInput(concurrentRoute.SrcAirport, concurrentRoute.DestAirport, concurrentRoute.Token);
-            if (!string.IsNullOrEmpty(error))
+            try
             {
-                return JsonConvert.SerializeObject(new Result() { Error = error });
+                concurrentDictionary.TryAdd(concurrentRoute, concurrentRoute.Token);
+
+                string error = ValidateInput(concurrentRoute.SrcAirport, concurrentRoute.DestAirport, concurrentRoute.Token);
+                if (!string.IsNullOrEmpty(error))
+                {
+                    return JsonConvert.SerializeObject(new Result() { Error = error });
+                }
+                var routes = await apiClient.GetRoutesByAirports(concurrentRoute.SrcAirport, concurrentRoute.DestAirport, concurrentRoute.Token);
+
+                CancellationToken token;
+                concurrentDictionary.TryRemove(concurrentRoute, out token);
+
+                return JsonConvert.SerializeObject(new Result() { Routes = routes });
             }
-            var routes = await apiClient.GetRoutesByAirports(concurrentRoute.SrcAirport, concurrentRoute.DestAirport, concurrentRoute.Token);
-
-            CancellationToken token;
-            concurrentDictionary.TryRemove(concurrentRoute, out token);
-
-            return JsonConvert.SerializeObject(new Result() { Routes = routes });
+            catch (Exception ex)
+            {
+                CancellationToken token;
+                concurrentDictionary.TryRemove(concurrentRoute, out token);
+                throw ex;
+            }
         }
 
         private string TryCancelTask(ConcurrentRoute concurrentRoute)
         {
-            CancellationToken token;
-            concurrentDictionary.TryGetValue(concurrentRoute, out token);
-
-            bool tokenExistsAndCanBeCancelled = token != null && token.CanBeCanceled;
-            if (tokenExistsAndCanBeCancelled)
+            try
             {
-                token.ThrowIfCancellationRequested();
+                CancellationToken token;
+                concurrentDictionary.TryGetValue(concurrentRoute, out token);
+
+                bool tokenExistsAndCanBeCancelled = token != null && token.CanBeCanceled;
+                if (tokenExistsAndCanBeCancelled)
+                {
+                    token.ThrowIfCancellationRequested();
+                }
+
+                concurrentDictionary.TryRemove(concurrentRoute, out token);
+
+                string result = tokenExistsAndCanBeCancelled ? ErrorMessages.ProcessWasStoped : ErrorMessages.HandlingProcessNotFound;
+                return JsonConvert.SerializeObject(new Result() { Message = result });
             }
-
-            concurrentDictionary.TryRemove(concurrentRoute, out token);
-
-            string result = tokenExistsAndCanBeCancelled ? ErrorMessages.ProcessWasStoped : ErrorMessages.HandlingProcessNotFound;
-            return JsonConvert.SerializeObject(new Result() { Message = result });
+            catch (Exception ex)
+            {
+                CancellationToken token;
+                concurrentDictionary.TryRemove(concurrentRoute, out token);
+                throw ex;
+            }
         }
 
         private string ValidateInput(string from, string to, CancellationToken ct)
