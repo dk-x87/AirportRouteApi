@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-
-namespace AirportRouteApi.Models
+﻿namespace AirportRouteApi.Models
 {
     public class Result
     {
         public string Error { get; set; }
         public string Message { get; set; }
-        public List<Route> Routes { get; set; }
+        public Route Route { get; set; }
     }
 }

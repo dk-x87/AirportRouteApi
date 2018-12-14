@@ -552,3 +552,5 @@ Path 'message', line 1, position 11.
 2018-11-24T20:44:49.0464343+03:00 0HLII6HVVUJ7R:0000000A [INF] Executing ObjectResult, writing value "Microsoft.AspNetCore.Mvc.ControllerContext". (4e968210)
 2018-11-24T20:44:49.0465719+03:00 0HLII6HVVUJ7R:0000000A [INF] Executed action "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)" in 1358.1375ms (afa2e885)
 2018-11-24T20:44:49.0466569+03:00 0HLII6HVVUJ7R:0000000A [INF] Request finished in 1358.7925ms 200 text/plain; charset=utf-8 (791a596a)
+2018-11-24T21:04:50.6770219+03:00 0HLII6HVVUJ84:00000001 [INF] Request starting HTTP/1.1 POST http://127.0.0.1:34009/AIRPORTROUTE/iisintegration  0 (ca22a1cb)
+2018-11-24T21:04:50.6814114+03:00 0HLII6HVVUJ84:00000001 [INF] Request finished in 4.4198ms 202  (791a596a)

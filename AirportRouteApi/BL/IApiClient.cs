@@ -7,7 +7,7 @@ namespace AirportRouteApi.BL
 {
     public interface IApiClient
     {
-        Task<List<Route>> GetRoutesByAirports(string from, string to, CancellationToken ct);
+        Task<Route> GetRoutesByAirports(string from, string to, CancellationToken ct);
 
         Task<bool> IsValidAirport(string alias, CancellationToken ct);
     }

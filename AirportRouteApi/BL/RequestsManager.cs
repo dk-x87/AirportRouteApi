@@ -1,6 +1,4 @@
 ﻿using AirportRouteApi.Models;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,92 +13,82 @@ namespace AirportRouteApi.BL
         }
 
         private readonly IApiClient apiClient;
-        private readonly int maxConcurrentRequests;
-        private static ConcurrentDictionary<ConcurrentRoute, CancellationToken> concurrentDictionary = new ConcurrentDictionary<ConcurrentRoute, CancellationToken>();
+        private static ConcurrentDictionary<int, CancellationTokenSource> concurrentDictionary = new ConcurrentDictionary<int, CancellationTokenSource>();
 
-        public async Task<string> TrySetTask(string from, string to, string userAgent, string remoteAddress)
+        public async Task<Result> TrySetTask(string from, string to, string userAgent, string remoteAddress)
         {
             var tokenSource = new CancellationTokenSource();
-            CancellationToken token = tokenSource.Token;
-            ConcurrentRoute concurrentRoute = new ConcurrentRoute() { SrcAirport = from, DestAirport = to, UserAgent = userAgent, RemoteAddress = remoteAddress, Token = token};
+            ConcurrentRoute concurrentRoute = new ConcurrentRoute() { SrcAirport = from, DestAirport = to, UserAgent = userAgent, RemoteAddress = remoteAddress, TokenSource = tokenSource};
             return await TryGetRoutes(concurrentRoute);
         }
 
-        public string CancelTask(string from, string to, string userAgent, string remoteAddress)
+        public Result CancelTask(string from, string to, string userAgent, string remoteAddress)
         {
             ConcurrentRoute concurrentRoute = new ConcurrentRoute() { SrcAirport = from, DestAirport = to, UserAgent = userAgent, RemoteAddress = remoteAddress };
             return TryCancelTask(concurrentRoute); 
         }
 
-        public static int ProcessingsTasksCount()
+        public int ProcessingsTasksCount()
         {
             return concurrentDictionary.Count;
         }
 
 
-        private async Task<string> TryGetRoutes(ConcurrentRoute concurrentRoute)
+        private async Task<Result> TryGetRoutes(ConcurrentRoute concurrentRoute)
         {
+            CancellationTokenSource tokenSource;
+            var task = ValidateInput(concurrentRoute.SrcAirport, concurrentRoute.DestAirport, concurrentRoute.TokenSource.Token);
             try
             {
-                concurrentDictionary.TryAdd(concurrentRoute, concurrentRoute.Token);
-
-                string error = ValidateInput(concurrentRoute.SrcAirport, concurrentRoute.DestAirport, concurrentRoute.Token);
+                concurrentDictionary.TryAdd(concurrentRoute.GetHashCode(), concurrentRoute.TokenSource);
+                await task;
+                string error = task.Result;
                 if (!string.IsNullOrEmpty(error))
                 {
-                    return JsonConvert.SerializeObject(new Result() { Error = error });
+                    return new Result() { Error = error };
                 }
-                var routes = await apiClient.GetRoutesByAirports(concurrentRoute.SrcAirport, concurrentRoute.DestAirport, concurrentRoute.Token);
-
-                CancellationToken token;
-                concurrentDictionary.TryRemove(concurrentRoute, out token);
-
-                return JsonConvert.SerializeObject(new Result() { Routes = routes });
+                var route = await apiClient.GetRoutesByAirports(concurrentRoute.SrcAirport, concurrentRoute.DestAirport, concurrentRoute.TokenSource.Token);
+                return new Result() { Route = route };
             }
-            catch (Exception ex)
+            finally
             {
-                CancellationToken token;
-                concurrentDictionary.TryRemove(concurrentRoute, out token);
-                throw ex;
+                concurrentDictionary.TryRemove(concurrentRoute.GetHashCode(), out tokenSource);
             }
         }
 
-        private string TryCancelTask(ConcurrentRoute concurrentRoute)
+        private Result TryCancelTask(ConcurrentRoute concurrentRoute)
         {
+            CancellationTokenSource tokenSource;
             try
             {
-                CancellationToken token;
-                concurrentDictionary.TryGetValue(concurrentRoute, out token);
+                concurrentDictionary.TryGetValue(concurrentRoute.GetHashCode(), out tokenSource);
 
-                bool tokenExistsAndCanBeCancelled = token != null && token.CanBeCanceled;
+                bool tokenExistsAndCanBeCancelled = tokenSource != null && tokenSource.Token != null && tokenSource.Token.CanBeCanceled;
                 if (tokenExistsAndCanBeCancelled)
                 {
-                    token.ThrowIfCancellationRequested();
+                    tokenSource.Cancel();
                 }
 
-                concurrentDictionary.TryRemove(concurrentRoute, out token);
-
                 string result = tokenExistsAndCanBeCancelled ? ErrorMessages.ProcessWasStoped : ErrorMessages.HandlingProcessNotFound;
-                return JsonConvert.SerializeObject(new Result() { Message = result });
+                return new Result() { Message = result };
             }
-            catch (Exception ex)
+            finally
             {
-                CancellationToken token;
-                concurrentDictionary.TryRemove(concurrentRoute, out token);
-                throw ex;
+                concurrentDictionary.TryRemove(concurrentRoute.GetHashCode(), out tokenSource);
             }
         }
 
-        private string ValidateInput(string from, string to, CancellationToken ct)
+        private async Task<string> ValidateInput(string from, string to, CancellationToken ct)
         {
             if (string.IsNullOrEmpty(from) || string.IsNullOrEmpty(to))
             {
                 return ErrorMessages.EmptyCodes;
             }
-            if (!apiClient.IsValidAirport(from, ct).Result)
+            if (!await apiClient.IsValidAirport(from, ct))
             {
                 return ErrorMessages.NotValidSourceAirportCode;
             }
-            if (!apiClient.IsValidAirport(to, ct).Result)
+            if (!await apiClient.IsValidAirport(to, ct))
             {
                 return ErrorMessages.NotValidSourceDestinationCode;
             }

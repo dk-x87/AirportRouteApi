@@ -1,12 +1,14 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using AirportRouteApi.Models;
 using System.Threading.Tasks;
 
 namespace AirportRouteApi.BL
 {
     public interface IRequestsManager
     {
-        Task<string> TrySetTask(string from, string to, string userAgent, string remoteAddress);
+        Task<Result> TrySetTask(string from, string to, string userAgent, string remoteAddress);
 
-        string CancelTask(string from, string to, string userAgent, string remoteAddress);
+        Result CancelTask(string from, string to, string userAgent, string remoteAddress);
+
+        int ProcessingsTasksCount();
     }
 }

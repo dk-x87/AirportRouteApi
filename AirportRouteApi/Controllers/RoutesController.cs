@@ -29,7 +29,9 @@ namespace AirportRouteApi.Controllers
             {
                 string userAgent = HttpContext.Request.Headers["user-agent"];
                 string remoteAddress = HttpContext.Connection.RemoteIpAddress.ToString();
-                return await requestsManager.TrySetTask(from, to, userAgent, remoteAddress);
+                var task = requestsManager.TrySetTask(from, to, userAgent, remoteAddress);
+                await task;
+                return JsonConvert.SerializeObject(task.Result);
             }
             catch (Exception ex)
             {
@@ -46,7 +48,7 @@ namespace AirportRouteApi.Controllers
             {
                 string userAgent = HttpContext.Request.Headers["user-agent"];
                 string remoteAddress = HttpContext.Connection.RemoteIpAddress.ToString();
-                return requestsManager.CancelTask(from, to, userAgent, remoteAddress);
+                return JsonConvert.SerializeObject(requestsManager.CancelTask(from, to, userAgent, remoteAddress));
             }
             catch (Exception ex)
             {

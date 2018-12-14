@@ -9,6 +9,7 @@ namespace AirportRouteApi.Infrastructure
     {
         private readonly RequestDelegate next;
         private readonly int maxConcurrentRequests;
+        private IRequestsManager requestsManager;
 
         public MaxConcurrentRequestsMiddleware(RequestDelegate nxt, int maxRequests)
         {
@@ -16,8 +17,9 @@ namespace AirportRouteApi.Infrastructure
             maxConcurrentRequests = maxRequests;
         }
 
-        public async Task Invoke(HttpContext context)
+        public async Task Invoke(HttpContext context, IRequestsManager reqManager)
         {
+            requestsManager = reqManager;
             if (CheckLimitExceeded())
             {
                 IHttpResponseFeature responseFeature = context.Features.Get<IHttpResponseFeature>();
@@ -33,7 +35,7 @@ namespace AirportRouteApi.Infrastructure
 
         private bool CheckLimitExceeded()
         {
-            return RequestsManager.ProcessingsTasksCount() >= maxConcurrentRequests;
+            return requestsManager.ProcessingsTasksCount() >= maxConcurrentRequests;
         }
     }
 }
