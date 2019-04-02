@@ -1,0 +1,14 @@
+D:\fly\AirportRouteApi\AirportRouteApi1\AirportRouteApi\obj\Debug\netcoreapp2.1\AirportRouteApi.csproj.CoreCompileInputs.cache
+D:\fly\AirportRouteApi\AirportRouteApi1\AirportRouteApi\obj\Debug\netcoreapp2.1\AirportRouteApi.AssemblyInfoInputs.cache
+D:\fly\AirportRouteApi\AirportRouteApi1\AirportRouteApi\obj\Debug\netcoreapp2.1\AirportRouteApi.AssemblyInfo.cs
+D:\fly\AirportRouteApi\AirportRouteApi1\AirportRouteApi\bin\Debug\netcoreapp2.1\AirportRouteApi.deps.json
+D:\fly\AirportRouteApi\AirportRouteApi1\AirportRouteApi\bin\Debug\netcoreapp2.1\AirportRouteApi.runtimeconfig.json
+D:\fly\AirportRouteApi\AirportRouteApi1\AirportRouteApi\bin\Debug\netcoreapp2.1\AirportRouteApi.runtimeconfig.dev.json
+D:\fly\AirportRouteApi\AirportRouteApi1\AirportRouteApi\bin\Debug\netcoreapp2.1\AirportRouteApi.dll
+D:\fly\AirportRouteApi\AirportRouteApi1\AirportRouteApi\bin\Debug\netcoreapp2.1\AirportRouteApi.pdb
+D:\fly\AirportRouteApi\AirportRouteApi1\AirportRouteApi\obj\Debug\netcoreapp2.1\AirportRouteApi.RazorAssemblyInfo.cache
+D:\fly\AirportRouteApi\AirportRouteApi1\AirportRouteApi\obj\Debug\netcoreapp2.1\AirportRouteApi.RazorAssemblyInfo.cs
+D:\fly\AirportRouteApi\AirportRouteApi1\AirportRouteApi\obj\Debug\netcoreapp2.1\AirportRouteApi.RazorTargetAssemblyInfo.cache
+D:\fly\AirportRouteApi\AirportRouteApi1\AirportRouteApi\obj\Debug\netcoreapp2.1\AirportRouteApi.dll
+D:\fly\AirportRouteApi\AirportRouteApi1\AirportRouteApi\obj\Debug\netcoreapp2.1\AirportRouteApi.pdb
+D:\fly\AirportRouteApi\AirportRouteApi1\AirportRouteApi\obj\Debug\netcoreapp2.1\UserSecretsAssemblyInfo.cs

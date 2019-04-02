@@ -1,7 +1,3 @@
-D:\fly\AirportRouteApi\AirportRouteTest\obj\Debug\netcoreapp2.1\AirportRouteTest.csprojAssemblyReference.cache
-D:\fly\AirportRouteApi\AirportRouteTest\obj\Debug\netcoreapp2.1\AirportRouteTest.csproj.CoreCompileInputs.cache
-D:\fly\AirportRouteApi\AirportRouteTest\obj\Debug\netcoreapp2.1\AirportRouteTest.AssemblyInfoInputs.cache
-D:\fly\AirportRouteApi\AirportRouteTest\obj\Debug\netcoreapp2.1\AirportRouteTest.AssemblyInfo.cs
 D:\fly\AirportRouteApi\AirportRouteTest\bin\Debug\netcoreapp2.1\NUnit3.TestAdapter.dll
 D:\fly\AirportRouteApi\AirportRouteTest\bin\Debug\netcoreapp2.1\NUnit3.TestAdapter.pdb
 D:\fly\AirportRouteApi\AirportRouteTest\bin\Debug\netcoreapp2.1\nunit.engine.netstandard.dll
@@ -13,6 +9,10 @@ D:\fly\AirportRouteApi\AirportRouteTest\bin\Debug\netcoreapp2.1\AirportRouteTest
 D:\fly\AirportRouteApi\AirportRouteTest\bin\Debug\netcoreapp2.1\AirportRouteTest.pdb
 D:\fly\AirportRouteApi\AirportRouteTest\bin\Debug\netcoreapp2.1\AirportRouteApi.dll
 D:\fly\AirportRouteApi\AirportRouteTest\bin\Debug\netcoreapp2.1\AirportRouteApi.pdb
+D:\fly\AirportRouteApi\AirportRouteTest\obj\Debug\netcoreapp2.1\AirportRouteTest.csprojAssemblyReference.cache
+D:\fly\AirportRouteApi\AirportRouteTest\obj\Debug\netcoreapp2.1\AirportRouteTest.csproj.CoreCompileInputs.cache
+D:\fly\AirportRouteApi\AirportRouteTest\obj\Debug\netcoreapp2.1\AirportRouteTest.AssemblyInfoInputs.cache
+D:\fly\AirportRouteApi\AirportRouteTest\obj\Debug\netcoreapp2.1\AirportRouteTest.AssemblyInfo.cs
 D:\fly\AirportRouteApi\AirportRouteTest\obj\Debug\netcoreapp2.1\AirportRouteTest.csproj.CopyComplete
 D:\fly\AirportRouteApi\AirportRouteTest\obj\Debug\netcoreapp2.1\AirportRouteTest.dll
 D:\fly\AirportRouteApi\AirportRouteTest\obj\Debug\netcoreapp2.1\AirportRouteTest.pdb
