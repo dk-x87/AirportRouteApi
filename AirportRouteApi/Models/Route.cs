@@ -7,7 +7,5 @@
         public string SrcAirport { get; set; }
 
         public string DestAirport { get; set; }
-
-        public int TransferCount { get; set; }
     }
 }

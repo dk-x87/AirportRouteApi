@@ -1,0 +1,108 @@
+2019-04-11T00:02:26.5720527+03:00 0HLLTUVA383KP:00000001 [INF] Request starting HTTP/1.1 GET https://localhost:5001/api/routes   (ca22a1cb)
+2019-04-11T00:02:27.0201004+03:00 0HLLTUVA383KP:00000001 [INF] Request finished in 452.2203ms 404  (791a596a)
+2019-04-11T00:03:26.8496130+03:00 0HLLTUVA383KP:00000002 [INF] Request starting HTTP/1.1 GET https://localhost:5001/api/routes/GetRoute?from=VOZ&to=ERC   (ca22a1cb)
+2019-04-11T00:03:26.9100612+03:00 0HLLTUVA383KP:00000002 [INF] Route matched with "{action = \"GetRoute\", controller = \"Routes\"}". Executing action "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)" (a44c0341)
+2019-04-11T00:03:26.9586247+03:00 0HLLTUVA383KP:00000002 [INF] Executing action method "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)" with arguments (["VOZ", "ERC"]) - Validation state: Valid (4e3479ed)
+2019-04-11T00:03:38.3007964+03:00 0HLLTUVA383KP:00000002 [ERR] Something went wrong. Request could not be completed (4f8efe7c)
+Newtonsoft.Json.JsonSerializationException: Cannot deserialize the current JSON object (e.g. {"name":"value"}) into type 'System.Collections.Generic.List`1[AirportRouteApi.Models.Route]' because the type requires a JSON array (e.g. [1,2,3]) to deserialize correctly.
+To fix this error either change the JSON to a JSON array (e.g. [1,2,3]) or change the deserialized type so that it is a normal .NET type (e.g. not a primitive type like integer, not a collection type like an array or List<T>) that can be deserialized from a JSON object. JsonObjectAttribute can also be added to the type to force it to deserialize from a JSON object.
+Path 'message', line 1, position 11.
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue) in /_/Src/Newtonsoft.Json/Serialization/JsonSerializerInternalReader.cs:line 501
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent) in /_/Src/Newtonsoft.Json/Serialization/JsonSerializerInternalReader.cs:line 167
+   at Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType) in /_/Src/Newtonsoft.Json/JsonSerializer.cs:line 907
+   at Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings) in /_/Src/Newtonsoft.Json/JsonConvert.cs:line 828
+   at Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings) in /_/Src/Newtonsoft.Json/JsonConvert.cs:line 786
+   at AirportRouteApi.BL.ApiClient.TrySearch(String from, String to, CancellationToken ct, Int32 attempt) in D:\fly\AirportRouteApi\AirportRouteApi\BL\ApiClient.cs:line 48
+   at AirportRouteApi.BL.ApiClient.TrySearch(String from, String to, CancellationToken ct, Int32 attempt) in D:\fly\AirportRouteApi\AirportRouteApi\BL\ApiClient.cs:line 60
+   at AirportRouteApi.BL.ApiClient.TrySearch(String from, String to, CancellationToken ct, Int32 attempt) in D:\fly\AirportRouteApi\AirportRouteApi\BL\ApiClient.cs:line 60
+   at AirportRouteApi.BL.ApiClient.GetRoutesByAirports(String from, String to, CancellationToken ct) in D:\fly\AirportRouteApi\AirportRouteApi\BL\ApiClient.cs:line 27
+   at AirportRouteApi.BL.RequestsManager.TryGetRoutes(ConcurrentRoute concurrentRoute) in D:\fly\AirportRouteApi\AirportRouteApi\BL\RequestsManager.cs:line 50
+   at AirportRouteApi.BL.RequestsManager.TrySetTask(String from, String to, String userAgent, String remoteAddress) in D:\fly\AirportRouteApi\AirportRouteApi\BL\RequestsManager.cs:line 22
+   at AirportRouteApi.Controllers.RoutesController.GetRoute(String from, String to) in D:\fly\AirportRouteApi\AirportRouteApi\Controllers\RoutesController.cs:line 40
+2019-04-11T00:03:38.3819894+03:00 0HLLTUVA383KP:00000002 [INF] Executed action method "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)", returned result "Microsoft.AspNetCore.Mvc.ObjectResult" in 11417.6145ms. (50a9e262)
+2019-04-11T00:03:38.4112982+03:00 0HLLTUVA383KP:00000002 [INF] Executing ObjectResult, writing value of type '"System.String"'. (8a1b66c8)
+2019-04-11T00:03:38.4259836+03:00 0HLLTUVA383KP:00000002 [INF] Executed action "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)" in 11512.3035ms (afa2e885)
+2019-04-11T00:03:38.4355639+03:00 0HLLTUVA383KP:00000002 [INF] Request finished in 11585.9729ms 200 text/plain; charset=utf-8 (791a596a)
+2019-04-11T00:03:38.5624546+03:00 0HLLTUVA383KP:00000003 [INF] Request starting HTTP/1.1 GET https://localhost:5001/favicon.ico   (ca22a1cb)
+2019-04-11T00:03:38.5642228+03:00 0HLLTUVA383KP:00000003 [INF] Request finished in 1.9195ms 404  (791a596a)
+2019-04-11T00:04:17.8342696+03:00 0HLLTV0BALV44:00000001 [INF] Request starting HTTP/1.1 GET https://localhost:5001/api/routes   (ca22a1cb)
+2019-04-11T00:04:18.1809276+03:00 0HLLTV0BALV44:00000001 [INF] Request finished in 328.6008ms 404  (791a596a)
+2019-04-11T00:04:28.5420803+03:00 0HLLTV0BALV44:00000002 [INF] Request starting HTTP/1.1 GET https://localhost:5001/api/routes/GetRoute?from=VOZ&to=ERC   (ca22a1cb)
+2019-04-11T00:04:28.6287923+03:00 0HLLTV0BALV44:00000002 [INF] Route matched with "{action = \"GetRoute\", controller = \"Routes\"}". Executing action "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)" (a44c0341)
+2019-04-11T00:04:28.6789802+03:00 0HLLTV0BALV44:00000002 [INF] Executing action method "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)" with arguments (["VOZ", "ERC"]) - Validation state: Valid (4e3479ed)
+2019-04-11T23:31:23.9828650+03:00 0HLLUNIJJD1DC:00000001 [INF] Request starting HTTP/1.1 GET https://localhost:5001/api/routes   (ca22a1cb)
+2019-04-11T23:31:25.0118948+03:00 0HLLUNIJJD1DC:00000001 [INF] Request finished in 1045.5762ms 404  (791a596a)
+2019-04-11T23:32:22.2299990+03:00 0HLLUNIJJD1DE:00000001 [INF] Request starting HTTP/1.1 GET https://localhost:5001/api/routes/GetRoute?from=VOZ&to=ERC   (ca22a1cb)
+2019-04-11T23:32:22.3435451+03:00 0HLLUNIJJD1DE:00000001 [INF] Route matched with "{action = \"GetRoute\", controller = \"Routes\"}". Executing action "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)" (a44c0341)
+2019-04-11T23:32:22.4221509+03:00 0HLLUNIJJD1DE:00000001 [INF] Executing action method "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)" with arguments (["VOZ", "ERC"]) - Validation state: Valid (4e3479ed)
+2019-04-11T23:33:41.5051062+03:00 0HLLUNIJJD1DE:00000001 [ERR] Something went wrong. Request could not be completed (4f8efe7c)
+Newtonsoft.Json.JsonSerializationException: Cannot deserialize the current JSON object (e.g. {"name":"value"}) into type 'System.Collections.Generic.List`1[AirportRouteApi.Models.Route]' because the type requires a JSON array (e.g. [1,2,3]) to deserialize correctly.
+To fix this error either change the JSON to a JSON array (e.g. [1,2,3]) or change the deserialized type so that it is a normal .NET type (e.g. not a primitive type like integer, not a collection type like an array or List<T>) that can be deserialized from a JSON object. JsonObjectAttribute can also be added to the type to force it to deserialize from a JSON object.
+Path 'message', line 1, position 11.
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue) in /_/Src/Newtonsoft.Json/Serialization/JsonSerializerInternalReader.cs:line 501
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent) in /_/Src/Newtonsoft.Json/Serialization/JsonSerializerInternalReader.cs:line 167
+   at Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType) in /_/Src/Newtonsoft.Json/JsonSerializer.cs:line 907
+   at Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings) in /_/Src/Newtonsoft.Json/JsonConvert.cs:line 828
+   at Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings) in /_/Src/Newtonsoft.Json/JsonConvert.cs:line 786
+   at AirportRouteApi.BL.ApiClient.TrySearch(String from, String to, CancellationToken ct, Int32 attempt) in D:\fly\AirportRouteApi\AirportRouteApi\BL\ApiClient.cs:line 48
+   at AirportRouteApi.BL.ApiClient.TrySearch(String from, String to, CancellationToken ct, Int32 attempt) in D:\fly\AirportRouteApi\AirportRouteApi\BL\ApiClient.cs:line 60
+   at AirportRouteApi.BL.ApiClient.TrySearch(String from, String to, CancellationToken ct, Int32 attempt) in D:\fly\AirportRouteApi\AirportRouteApi\BL\ApiClient.cs:line 60
+   at AirportRouteApi.BL.ApiClient.GetRoutesByAirports(String from, String to, CancellationToken ct) in D:\fly\AirportRouteApi\AirportRouteApi\BL\ApiClient.cs:line 27
+   at AirportRouteApi.BL.RequestsManager.TryGetRoutes(ConcurrentRoute concurrentRoute) in D:\fly\AirportRouteApi\AirportRouteApi\BL\RequestsManager.cs:line 50
+   at AirportRouteApi.BL.RequestsManager.TrySetTask(String from, String to, String userAgent, String remoteAddress) in D:\fly\AirportRouteApi\AirportRouteApi\BL\RequestsManager.cs:line 22
+   at AirportRouteApi.Controllers.RoutesController.GetRoute(String from, String to) in D:\fly\AirportRouteApi\AirportRouteApi\Controllers\RoutesController.cs:line 40
+2019-04-11T23:33:41.6280834+03:00 0HLLUNIJJD1DE:00000001 [INF] Executed action method "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)", returned result "Microsoft.AspNetCore.Mvc.ObjectResult" in 79200.7573ms. (50a9e262)
+2019-04-11T23:33:41.6610866+03:00 0HLLUNIJJD1DE:00000001 [INF] Executing ObjectResult, writing value of type '"System.String"'. (8a1b66c8)
+2019-04-11T23:33:41.6823348+03:00 0HLLUNIJJD1DE:00000001 [INF] Executed action "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)" in 79331.6091ms (afa2e885)
+2019-04-11T23:33:41.6983724+03:00 0HLLUNIJJD1DE:00000001 [INF] Request finished in 79476.8676ms 200 text/plain; charset=utf-8 (791a596a)
+2019-04-11T23:33:41.7777856+03:00 0HLLUNIJJD1DE:00000002 [INF] Request starting HTTP/1.1 GET https://localhost:5001/favicon.ico   (ca22a1cb)
+2019-04-11T23:33:41.7785875+03:00 0HLLUNIJJD1DE:00000002 [INF] Request finished in 0.729ms 404  (791a596a)
+2019-04-11T23:36:07.5948733+03:00 0HLLUNIJJD1DE:00000003 [INF] Request starting HTTP/1.1 GET https://localhost:5001/api/routes/GetRoute?from=VOZ&to=ERC   (ca22a1cb)
+2019-04-11T23:36:07.6010825+03:00 0HLLUNIJJD1DE:00000003 [INF] Route matched with "{action = \"GetRoute\", controller = \"Routes\"}". Executing action "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)" (a44c0341)
+2019-04-11T23:36:07.6032366+03:00 0HLLUNIJJD1DE:00000003 [INF] Executing action method "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)" with arguments (["VOZ", "ERC"]) - Validation state: Valid (4e3479ed)
+2019-04-11T23:36:17.5524030+03:00 0HLLUNIJJD1DE:00000003 [INF] Executed action method "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)", returned result "Microsoft.AspNetCore.Mvc.ObjectResult" in 9948.9434ms. (50a9e262)
+2019-04-11T23:36:17.5532341+03:00 0HLLUNIJJD1DE:00000003 [INF] Executing ObjectResult, writing value of type '"System.String"'. (8a1b66c8)
+2019-04-11T23:36:17.5536953+03:00 0HLLUNIJJD1DE:00000003 [INF] Executed action "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)" in 9952.508ms (afa2e885)
+2019-04-11T23:36:17.5540566+03:00 0HLLUNIJJD1DE:00000003 [INF] Request finished in 9959.413ms 200 text/plain; charset=utf-8 (791a596a)
+2019-04-11T23:36:59.3296635+03:00 0HLLUNIJJD1DE:00000004 [INF] Request starting HTTP/1.1 GET https://localhost:5001/api/routes/GetRoute?from=VOZ&to=ERC   (ca22a1cb)
+2019-04-11T23:36:59.3352041+03:00 0HLLUNIJJD1DE:00000004 [INF] Route matched with "{action = \"GetRoute\", controller = \"Routes\"}". Executing action "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)" (a44c0341)
+2019-04-11T23:36:59.3598138+03:00 0HLLUNIJJD1DE:00000004 [INF] Executing action method "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)" with arguments (["VOZ", "ERC"]) - Validation state: Valid (4e3479ed)
+2019-04-11T23:38:35.2569495+03:00 0HLLUNIJJD1DE:00000004 [ERR] Something went wrong. Request could not be completed (4f8efe7c)
+System.AggregateException: One or more errors occurred. (Попытка установить соединение была безуспешной, т.к. от другого компьютера за требуемое время не получен нужный отклик, или было разорвано уже установленное соединение из-за неверного отклика уже подключенного компьютера) ---> System.Net.Http.HttpRequestException: Попытка установить соединение была безуспешной, т.к. от другого компьютера за требуемое время не получен нужный отклик, или было разорвано уже установленное соединение из-за неверного отклика уже подключенного компьютера ---> System.Net.Sockets.SocketException: Попытка установить соединение была безуспешной, т.к. от другого компьютера за требуемое время не получен нужный отклик, или было разорвано уже установленное соединение из-за неверного отклика уже подключенного компьютера
+   at System.Net.Http.ConnectHelper.ConnectAsync(String host, Int32 port, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.ConnectHelper.ConnectAsync(String host, Int32 port, CancellationToken cancellationToken)
+   at System.Threading.Tasks.ValueTask`1.get_Result()
+   at System.Net.Http.HttpConnectionPool.CreateConnectionAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+   at System.Threading.Tasks.ValueTask`1.get_Result()
+   at System.Net.Http.HttpConnectionPool.WaitForCreatedConnectionAsync(ValueTask`1 creationTask)
+   at System.Threading.Tasks.ValueTask`1.get_Result()
+   at System.Net.Http.HttpConnectionPool.SendWithRetryAsync(HttpRequestMessage request, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at System.Net.Http.RedirectHandler.SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+   at System.Net.Http.HttpClient.FinishSendAsyncBuffered(Task`1 sendTask, HttpRequestMessage request, CancellationTokenSource cts, Boolean disposeCts)
+   --- End of inner exception stack trace ---
+   at System.Threading.Tasks.Task`1.GetResultCore(Boolean waitCompletionNotification)
+   at AirportRouteApi.BL.ApiClient.TrySearch(String from, String to, CancellationToken ct, Int32 attempt) in D:\fly\AirportRouteApi\AirportRouteApi\BL\ApiClient.cs:line 47
+   at AirportRouteApi.BL.ApiClient.TrySearch(String from, String to, CancellationToken ct, Int32 attempt) in D:\fly\AirportRouteApi\AirportRouteApi\BL\ApiClient.cs:line 60
+   at AirportRouteApi.BL.ApiClient.TrySearch(String from, String to, CancellationToken ct, Int32 attempt) in D:\fly\AirportRouteApi\AirportRouteApi\BL\ApiClient.cs:line 60
+   at AirportRouteApi.BL.ApiClient.GetRoutesByAirports(String from, String to, CancellationToken ct) in D:\fly\AirportRouteApi\AirportRouteApi\BL\ApiClient.cs:line 27
+   at AirportRouteApi.BL.RequestsManager.TryGetRoutes(ConcurrentRoute concurrentRoute) in D:\fly\AirportRouteApi\AirportRouteApi\BL\RequestsManager.cs:line 50
+   at AirportRouteApi.BL.RequestsManager.TrySetTask(String from, String to, String userAgent, String remoteAddress) in D:\fly\AirportRouteApi\AirportRouteApi\BL\RequestsManager.cs:line 22
+   at AirportRouteApi.Controllers.RoutesController.GetRoute(String from, String to) in D:\fly\AirportRouteApi\AirportRouteApi\Controllers\RoutesController.cs:line 40
+---> (Inner Exception #0) System.Net.Http.HttpRequestException: Попытка установить соединение была безуспешной, т.к. от другого компьютера за требуемое время не получен нужный отклик, или было разорвано уже установленное соединение из-за неверного отклика уже подключенного компьютера ---> System.Net.Sockets.SocketException: Попытка установить соединение была безуспешной, т.к. от другого компьютера за требуемое время не получен нужный отклик, или было разорвано уже установленное соединение из-за неверного отклика уже подключенного компьютера
+   at System.Net.Http.ConnectHelper.ConnectAsync(String host, Int32 port, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.ConnectHelper.ConnectAsync(String host, Int32 port, CancellationToken cancellationToken)
+   at System.Threading.Tasks.ValueTask`1.get_Result()
+   at System.Net.Http.HttpConnectionPool.CreateConnectionAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+   at System.Threading.Tasks.ValueTask`1.get_Result()
+   at System.Net.Http.HttpConnectionPool.WaitForCreatedConnectionAsync(ValueTask`1 creationTask)
+   at System.Threading.Tasks.ValueTask`1.get_Result()
+   at System.Net.Http.HttpConnectionPool.SendWithRetryAsync(HttpRequestMessage request, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at System.Net.Http.RedirectHandler.SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+   at System.Net.Http.HttpClient.FinishSendAsyncBuffered(Task`1 sendTask, HttpRequestMessage request, CancellationTokenSource cts, Boolean disposeCts)<---
+
+2019-04-11T23:38:35.2572125+03:00 0HLLUNIJJD1DE:00000004 [INF] Executed action method "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)", returned result "Microsoft.AspNetCore.Mvc.ObjectResult" in 95897.1433ms. (50a9e262)
+2019-04-11T23:38:35.2578328+03:00 0HLLUNIJJD1DE:00000004 [INF] Executing ObjectResult, writing value of type '"System.String"'. (8a1b66c8)
+2019-04-11T23:38:35.2580601+03:00 0HLLUNIJJD1DE:00000004 [INF] Executed action "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)" in 95922.7456ms (afa2e885)
+2019-04-11T23:38:35.2583044+03:00 0HLLUNIJJD1DE:00000004 [INF] Request finished in 95928.7042ms 200 text/plain; charset=utf-8 (791a596a)

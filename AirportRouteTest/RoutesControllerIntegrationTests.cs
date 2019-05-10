@@ -1,11 +1,9 @@
 using AirportRouteApi;
 using AirportRouteApi.BL;
 using AirportRouteApi.Controllers;
-using AirportRouteApi.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace Tests
@@ -18,18 +16,21 @@ namespace Tests
         private string airportUri = "https://homework.appulate.com/api/Airport/search?pattern=";
         private string airlineUri = "https://homework.appulate.com/api/Airline/";
         private int maxTransferCount = 3;
+        private int maxRequestCount = 3;
         private string existRouteSrcAirport = "VOZ";
         private string existRouteDestAirport = "VKO";
         private string notExistRouteSrcAirport = "DAA";
         private string notExistRouteDestAirport = "BIA";
         private string multipleTransferRouteSrcAirport = "ACE";
         private string multipleTransferRouteDestAirport = "FUE";
+        private string multipleTransferRouteMaxTransferCountSrcAirport = "EVN";
+        private string multipleTransferRouteMaxTransferCountDestAirport = "CAI";
         private string notExistAirport = "DAQ";
 
         [SetUp]
         public void Setup()
         {
-            RequestsManager reqManager = new RequestsManager(new ApiClient(routeUri, airportUri, airlineUri, maxTransferCount) { });
+            RequestsManager reqManager = new RequestsManager(new ApiClient(routeUri, airportUri, airlineUri, maxTransferCount, maxRequestCount) { });
             ILogger<RoutesController> log = new LoggerFactory().CreateLogger<RoutesController>();
 
             controller = new RoutesController(reqManager, log);
@@ -46,9 +47,9 @@ namespace Tests
             Assert.IsNotNull(response);
             Assert.IsNull(response.Exception);
             Assert.IsNotNull(response.Result);
-            var result = JsonConvert.DeserializeObject<Result>(response.Result);
+            var result = response.Result;
             Assert.IsNotNull(result);
-            Assert.IsNull(result.Route);
+            Assert.IsNull(result.Routes);
             Assert.AreEqual(result.Error, ErrorMessages.EmptyCodes);
         }
 
@@ -59,9 +60,9 @@ namespace Tests
             Assert.IsNotNull(response);
             Assert.IsNull(response.Exception);
             Assert.IsNotNull(response.Result);
-            var result = JsonConvert.DeserializeObject<Result>(response.Result);
+            var result = response.Result;
             Assert.IsNotNull(result);
-            Assert.IsNull(result.Route);
+            Assert.IsNull(result.Routes);
             Assert.AreEqual(result.Error, ErrorMessages.EmptyCodes);
         }
 
@@ -72,9 +73,9 @@ namespace Tests
             Assert.IsNotNull(response);
             Assert.IsNull(response.Exception);
             Assert.IsNotNull(response.Result);
-            var result = JsonConvert.DeserializeObject<Result>(response.Result);
+            var result = response.Result;
             Assert.IsNotNull(result);
-            Assert.IsNull(result.Route);
+            Assert.IsNull(result.Routes);
             Assert.AreEqual(result.Error, ErrorMessages.EmptyCodes);
         }
 
@@ -85,9 +86,9 @@ namespace Tests
             Assert.IsNotNull(response);
             Assert.IsNull(response.Exception);
             Assert.IsNotNull(response.Result);
-            var result = JsonConvert.DeserializeObject<Result>(response.Result);
+            var result = response.Result;
             Assert.IsNotNull(result);
-            Assert.IsNull(result.Route);
+            Assert.IsNull(result.Routes);
             Assert.AreEqual(result.Error, ErrorMessages.NotValidSourceDestinationCode);
         }
 
@@ -98,9 +99,9 @@ namespace Tests
             Assert.IsNotNull(response);
             Assert.IsNull(response.Exception);
             Assert.IsNotNull(response.Result);
-            var result = JsonConvert.DeserializeObject<Result>(response.Result);
+            var result = response.Result;
             Assert.IsNotNull(result);
-            Assert.IsNull(result.Route);
+            Assert.IsNull(result.Routes);
             Assert.AreEqual(result.Error, ErrorMessages.NotValidSourceAirportCode);
         }
 
@@ -110,12 +111,12 @@ namespace Tests
             var response = controller.GetRoute(existRouteSrcAirport, existRouteDestAirport);
             Assert.IsNotNull(response);
             Assert.IsNull(response.Exception);
-            var result = JsonConvert.DeserializeObject<Result>(response.Result);
+            var result = response.Result;
             Assert.IsNotNull(result);
             Assert.IsNull(result.Error);
-            Assert.IsNotNull(result.Route);
-            Assert.AreEqual(result.Route.SrcAirport, existRouteSrcAirport);
-            Assert.AreEqual(result.Route.DestAirport, existRouteDestAirport);
+            Assert.IsNotNull(result.Routes);
+            Assert.AreEqual(result.Routes[0].SrcAirport, existRouteSrcAirport);
+            Assert.AreEqual(result.Routes[result.Routes.Count - 1].DestAirport, existRouteDestAirport);
         }
 
         [Test]
@@ -124,10 +125,10 @@ namespace Tests
             var response = controller.GetRoute(notExistRouteSrcAirport, notExistRouteDestAirport);
             Assert.IsNotNull(response);
             Assert.IsNull(response.Exception);
-            var result = JsonConvert.DeserializeObject<Result>(response.Result);
+            var result = response.Result;
             Assert.IsNotNull(result);
             Assert.IsNull(result.Error);
-            Assert.IsNull(result.Route);
+            Assert.IsEmpty(result.Routes);
         }
 
         [Test]
@@ -136,13 +137,25 @@ namespace Tests
             var response = controller.GetRoute(multipleTransferRouteSrcAirport, multipleTransferRouteDestAirport);
             Assert.IsNotNull(response);
             Assert.IsNull(response.Exception);
-            var result = JsonConvert.DeserializeObject<Result>(response.Result);
+            var result = response.Result;
             Assert.IsNotNull(result);
             Assert.IsNull(result.Error);
-            Assert.IsNotNull(result.Route);
-            Assert.AreEqual(multipleTransferRouteSrcAirport, result.Route.SrcAirport);
-            Assert.AreEqual(multipleTransferRouteDestAirport, result.Route.DestAirport);
-            Assert.True(result.Route.TransferCount > 0);
+            Assert.IsNotNull(result.Routes);
+            Assert.AreEqual(multipleTransferRouteSrcAirport, result.Routes[0].SrcAirport);
+            Assert.AreEqual(multipleTransferRouteDestAirport, result.Routes[result.Routes.Count - 1].DestAirport);
+            Assert.True(result.Routes.Count > 0);
+        }
+
+        [Test]
+        public void GetRouteMultipleTransferWithMaxTransferTest()
+        {
+            var response = controller.GetRoute(multipleTransferRouteMaxTransferCountSrcAirport, multipleTransferRouteMaxTransferCountDestAirport, 1);
+            Assert.IsNotNull(response);
+            Assert.IsNull(response.Exception);
+            var result = response.Result;
+            Assert.IsNotNull(result);
+            Assert.IsNull(result.Error);
+            Assert.IsEmpty(result.Routes);
         }
 
         [Test]
@@ -151,7 +164,7 @@ namespace Tests
             controller.GetRoute(existRouteSrcAirport, existRouteDestAirport);
             var response = controller.StopRouteProcessing(existRouteSrcAirport, existRouteDestAirport);
             Assert.IsNotNull(response);
-            var result = JsonConvert.DeserializeObject<Result>(response);
+            var result = response;
             Assert.IsNotNull(result);
             Assert.IsNull(result.Error);
             Assert.IsTrue(result.Message.Equals(ErrorMessages.ProcessWasStoped) || result.Message.Equals(ErrorMessages.HandlingProcessNotFound));

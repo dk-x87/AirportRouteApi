@@ -4,6 +4,7 @@ using AirportRouteApi.BL;
 using AirportRouteApi.Models;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
@@ -20,53 +21,56 @@ namespace AirportRouteApi.Controllers
 
         private readonly IRequestsManager requestsManager;
         private readonly ILogger logger;
+        private string userAgent;
+        private string remoteAddress;
+
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            userAgent = HttpContext.Request.Headers["user-agent"];
+            remoteAddress = HttpContext.Connection.RemoteIpAddress.ToString();
+            base.OnActionExecuting(context);
+        }
 
         [Route("GetRoute")]
         [HttpGet]
-        public async Task<string> GetRoute(string from, string to)
+        public async Task<Result> GetRoute(string from, string to, int maxTransferCount = 0)
         {
             try
             {
-                string userAgent = HttpContext.Request.Headers["user-agent"];
-                string remoteAddress = HttpContext.Connection.RemoteIpAddress.ToString();
-                var task = requestsManager.TrySetTask(from, to, userAgent, remoteAddress);
-                await task;
-                return JsonConvert.SerializeObject(task.Result);
+                return await requestsManager.TrySetTask(from, to, maxTransferCount, userAgent, remoteAddress);
             }
             catch (Exception ex)
             {
                 logger.LogError(ex, ErrorMessages.ExceptionError);
-                return JsonConvert.SerializeObject(new Result() { Error = ErrorMessages.ExceptionError });
+                return new Result() { Error = ErrorMessages.ExceptionError };
             }
         }
 
         [Route("StopRouteProcessing")]
         [HttpGet]
-        public string StopRouteProcessing(string from, string to)
+        public Result StopRouteProcessing(string from, string to)
         {
             try
             {
-                string userAgent = HttpContext.Request.Headers["user-agent"];
-                string remoteAddress = HttpContext.Connection.RemoteIpAddress.ToString();
-                return JsonConvert.SerializeObject(requestsManager.CancelTask(from, to, userAgent, remoteAddress));
+                return requestsManager.CancelTask(from, to, userAgent, remoteAddress);
             }
             catch (Exception ex)
             {
                 logger.LogError(ex, ErrorMessages.ExceptionError);
-                return JsonConvert.SerializeObject(new Result() { Error = ErrorMessages.ExceptionError });
+                return new Result() { Error = ErrorMessages.ExceptionError };
             }
         }
 
         [Route("error")]
-        public string OnError()
+        public Result OnError()
         {
             var ex = HttpContext.Features.Get<IExceptionHandlerFeature>();
             if (ex != null)
             {
                 logger.LogError(ex.Error, ErrorMessages.ExceptionError);
-                return JsonConvert.SerializeObject(new Result() { Error = ErrorMessages.ExceptionError });
+                return new Result() { Error = ErrorMessages.ExceptionError };
             }
-            else return string.Empty;
+            else return null;
         }
 
     }

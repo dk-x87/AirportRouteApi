@@ -27,6 +27,7 @@ namespace AirportRouteApi
             logsFile = Configuration.GetSection("Data").GetValue(typeof(string), "LogsFile").ToString();
             exceptionHandler = Configuration.GetSection("Data").GetValue(typeof(string), "ExceptionHandler").ToString();
             maxTransferCount = Convert.ToInt32(Configuration.GetSection("Data").GetValue(typeof(int), "MaxTransferCount"));
+            maxRequestCount = Convert.ToInt32(Configuration.GetSection("Data").GetValue(typeof(int), "MaxRequestCount"));
         }
 
         public IConfiguration Configuration { get; }
@@ -38,11 +39,11 @@ namespace AirportRouteApi
         private string logsFile;
         private string exceptionHandler;
         private int maxTransferCount;
+        private int maxRequestCount;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddDistributedMemoryCache();
 
             services.AddSession(options =>
@@ -52,7 +53,7 @@ namespace AirportRouteApi
             });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddTransient<IRequestsManager, RequestsManager>();
-            services.AddTransient<IApiClient>(x => new ApiClient(routeUri, airportUri, airlineUri, maxTransferCount));
+            services.AddTransient<IApiClient>(x => new ApiClient(routeUri, airportUri, airlineUri, maxTransferCount, maxRequestCount));
             services.Configure<IISOptions>(options =>
             {
                 options.ForwardClientCertificate = false;

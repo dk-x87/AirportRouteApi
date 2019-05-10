@@ -1,0 +1,51 @@
+2019-04-13T22:28:46.7769950+03:00 0HLM08OUFGED3:00000001 [INF] Request starting HTTP/1.1 GET https://localhost:5001/api/routes   (ca22a1cb)
+2019-04-13T22:28:47.4295894+03:00 0HLM08OUFGED3:00000001 [INF] Request finished in 656.8393ms 404  (791a596a)
+2019-04-13T22:28:54.3292752+03:00 0HLM08OUFGED3:00000002 [INF] Request starting HTTP/1.1 GET https://localhost:5001/api/routes/GetRoute?from=VOZ&to=ERC   (ca22a1cb)
+2019-04-13T22:28:54.4366150+03:00 0HLM08OUFGED3:00000002 [INF] Route matched with "{action = \"GetRoute\", controller = \"Routes\"}". Executing action "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)" (a44c0341)
+2019-04-13T22:28:54.6079543+03:00 0HLM08OUFGED3:00000002 [INF] Executing action method "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)" with arguments (["VOZ", "ERC"]) - Validation state: Valid (4e3479ed)
+2019-04-13T22:29:00.3792324+03:00 0HLM08OUFGED3:00000002 [ERR] Something went wrong. Request could not be completed (4f8efe7c)
+Newtonsoft.Json.JsonSerializationException: Cannot deserialize the current JSON object (e.g. {"name":"value"}) into type 'System.Collections.Generic.List`1[AirportRouteApi.Models.Route]' because the type requires a JSON array (e.g. [1,2,3]) to deserialize correctly.
+To fix this error either change the JSON to a JSON array (e.g. [1,2,3]) or change the deserialized type so that it is a normal .NET type (e.g. not a primitive type like integer, not a collection type like an array or List<T>) that can be deserialized from a JSON object. JsonObjectAttribute can also be added to the type to force it to deserialize from a JSON object.
+Path 'message', line 1, position 11.
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue) in /_/Src/Newtonsoft.Json/Serialization/JsonSerializerInternalReader.cs:line 501
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent) in /_/Src/Newtonsoft.Json/Serialization/JsonSerializerInternalReader.cs:line 167
+   at Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType) in /_/Src/Newtonsoft.Json/JsonSerializer.cs:line 907
+   at Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings) in /_/Src/Newtonsoft.Json/JsonConvert.cs:line 828
+   at Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings) in /_/Src/Newtonsoft.Json/JsonConvert.cs:line 786
+   at AirportRouteApi.BL.ApiClient.TrySearch(String from, String to, CancellationToken ct, Int32 attempt) in D:\fly\AirportRouteApi\AirportRouteApi\BL\ApiClient.cs:line 48
+   at AirportRouteApi.BL.ApiClient.TrySearch(String from, String to, CancellationToken ct, Int32 attempt) in D:\fly\AirportRouteApi\AirportRouteApi\BL\ApiClient.cs:line 60
+   at AirportRouteApi.BL.ApiClient.TrySearch(String from, String to, CancellationToken ct, Int32 attempt) in D:\fly\AirportRouteApi\AirportRouteApi\BL\ApiClient.cs:line 60
+   at AirportRouteApi.BL.ApiClient.GetRoutesByAirports(String from, String to, CancellationToken ct) in D:\fly\AirportRouteApi\AirportRouteApi\BL\ApiClient.cs:line 27
+   at AirportRouteApi.BL.RequestsManager.TrySetTask(String from, String to, String userAgent, String remoteAddress) in D:\fly\AirportRouteApi\AirportRouteApi\BL\RequestsManager.cs:line 30
+   at AirportRouteApi.Controllers.RoutesController.GetRoute(String from, String to) in D:\fly\AirportRouteApi\AirportRouteApi\Controllers\RoutesController.cs:line 40
+2019-04-13T22:29:00.5231340+03:00 0HLM08OUFGED3:00000002 [INF] Executed action method "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)", returned result "Microsoft.AspNetCore.Mvc.ObjectResult" in 5910.8112ms. (50a9e262)
+2019-04-13T22:29:00.5535079+03:00 0HLM08OUFGED3:00000002 [INF] Executing ObjectResult, writing value of type '"System.String"'. (8a1b66c8)
+2019-04-13T22:29:00.5773556+03:00 0HLM08OUFGED3:00000002 [INF] Executed action "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)" in 6133.3421ms (afa2e885)
+2019-04-13T22:29:00.5895178+03:00 0HLM08OUFGED3:00000002 [INF] Request finished in 6260.2048ms 200 text/plain; charset=utf-8 (791a596a)
+2019-04-13T22:29:00.6829563+03:00 0HLM08OUFGED3:00000003 [INF] Request starting HTTP/1.1 GET https://localhost:5001/favicon.ico   (ca22a1cb)
+2019-04-13T22:29:00.6838977+03:00 0HLM08OUFGED3:00000003 [INF] Request finished in 0.9433ms 404  (791a596a)
+2019-04-13T22:29:05.7975756+03:00 0HLM08OUFGED3:00000004 [INF] Request starting HTTP/1.1 GET https://localhost:5001/api/routes/GetRoute?from=VOZ&to=ERC   (ca22a1cb)
+2019-04-13T22:29:05.7987775+03:00 0HLM08OUFGED3:00000004 [INF] Route matched with "{action = \"GetRoute\", controller = \"Routes\"}". Executing action "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)" (a44c0341)
+2019-04-13T22:29:05.8013116+03:00 0HLM08OUFGED3:00000004 [INF] Executing action method "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)" with arguments (["VOZ", "ERC"]) - Validation state: Valid (4e3479ed)
+2019-04-13T22:29:12.1322568+03:00 0HLM08OUFGED3:00000004 [INF] Executed action method "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)", returned result "Microsoft.AspNetCore.Mvc.ObjectResult" in 6330.7791ms. (50a9e262)
+2019-04-13T22:29:12.1328649+03:00 0HLM08OUFGED3:00000004 [INF] Executing ObjectResult, writing value of type '"System.String"'. (8a1b66c8)
+2019-04-13T22:29:12.1332503+03:00 0HLM08OUFGED3:00000004 [INF] Executed action "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)" in 6334.3669ms (afa2e885)
+2019-04-13T22:29:12.1336291+03:00 0HLM08OUFGED3:00000004 [INF] Request finished in 6336.0923ms 200 text/plain; charset=utf-8 (791a596a)
+2019-04-13T22:29:21.2587905+03:00 0HLM08OUFGED3:00000005 [INF] Request starting HTTP/1.1 GET https://localhost:5001/api/routes/GetRoute?from=VOZ&to=VKO   (ca22a1cb)
+2019-04-13T22:29:21.2620204+03:00 0HLM08OUFGED3:00000005 [INF] Route matched with "{action = \"GetRoute\", controller = \"Routes\"}". Executing action "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)" (a44c0341)
+2019-04-13T22:29:21.2622645+03:00 0HLM08OUFGED3:00000005 [INF] Executing action method "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)" with arguments (["VOZ", "VKO"]) - Validation state: Valid (4e3479ed)
+2019-04-13T22:29:22.7970105+03:00 0HLM08OUFGED3:00000005 [INF] Executed action method "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)", returned result "Microsoft.AspNetCore.Mvc.ObjectResult" in 1534.6423ms. (50a9e262)
+2019-04-13T22:29:22.7972191+03:00 0HLM08OUFGED3:00000005 [INF] Executing ObjectResult, writing value of type '"System.String"'. (8a1b66c8)
+2019-04-13T22:29:22.7974297+03:00 0HLM08OUFGED3:00000005 [INF] Executed action "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)" in 1535.3444ms (afa2e885)
+2019-04-13T22:29:22.7977178+03:00 0HLM08OUFGED3:00000005 [INF] Request finished in 1539.015ms 200 text/plain; charset=utf-8 (791a596a)
+2019-04-13T22:30:06.1556907+03:00 0HLM08PMKQNM6:00000001 [INF] Request starting HTTP/1.1 GET https://localhost:5001/api/routes   (ca22a1cb)
+2019-04-13T22:30:06.5939303+03:00 0HLM08PMKQNM6:00000001 [INF] Request finished in 435.2524ms 404  (791a596a)
+2019-04-13T22:30:25.3587216+03:00 0HLM08PMKQNM6:00000002 [INF] Request starting HTTP/1.1 GET https://localhost:5001/api/routes/GetRoute?from=VOZ&to=VKO   (ca22a1cb)
+2019-04-13T22:30:25.4498669+03:00 0HLM08PMKQNM6:00000002 [INF] Route matched with "{action = \"GetRoute\", controller = \"Routes\"}". Executing action "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)" (a44c0341)
+2019-04-13T22:30:25.5097435+03:00 0HLM08PMKQNM6:00000002 [INF] Executing action method "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)" with arguments (["VOZ", "VKO"]) - Validation state: Valid (4e3479ed)
+2019-04-13T22:30:27.5122365+03:00 0HLM08PMKQNM6:00000002 [INF] Executed action method "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)", returned result "Microsoft.AspNetCore.Mvc.ObjectResult" in 1992.4849ms. (50a9e262)
+2019-04-13T22:30:27.5455648+03:00 0HLM08PMKQNM6:00000002 [INF] Executing ObjectResult, writing value of type '"System.String"'. (8a1b66c8)
+2019-04-13T22:30:27.5685281+03:00 0HLM08PMKQNM6:00000002 [INF] Executed action "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)" in 2114.7649ms (afa2e885)
+2019-04-13T22:30:27.5831545+03:00 0HLM08PMKQNM6:00000002 [INF] Request finished in 2229.592ms 200 text/plain; charset=utf-8 (791a596a)
+2019-04-13T22:30:27.7127839+03:00 0HLM08PMKQNM6:00000003 [INF] Request starting HTTP/1.1 GET https://localhost:5001/favicon.ico   (ca22a1cb)
+2019-04-13T22:30:27.7134329+03:00 0HLM08PMKQNM6:00000003 [INF] Request finished in 0.6823ms 404  (791a596a)

@@ -1,0 +1,32 @@
+2019-04-28T23:01:18.5306603+03:00 0HLMC2H2A9NCQ:00000001 [INF] Request starting HTTP/1.1 GET https://localhost:5001/api/routes   (ca22a1cb)
+2019-04-28T23:01:19.2409138+03:00 0HLMC2H2A9NCQ:00000001 [INF] Request finished in 715.541ms 404  (791a596a)
+2019-04-28T23:01:30.7168506+03:00 0HLMC2H2A9NCQ:00000002 [INF] Request starting HTTP/1.1 GET https://localhost:5001/api/routes/GetRoute?from=ACE&to=FUE   (ca22a1cb)
+2019-04-28T23:01:30.8067138+03:00 0HLMC2H2A9NCQ:00000002 [INF] Route matched with "{action = \"GetRoute\", controller = \"Routes\"}". Executing action "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)" (a44c0341)
+2019-04-28T23:01:30.8749661+03:00 0HLMC2H2A9NCQ:00000002 [INF] Executing action method "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)" with arguments (["ACE", "FUE", "0"]) - Validation state: Valid (4e3479ed)
+2019-04-28T23:01:51.8825314+03:00 0HLMC2H2A9NCQ:00000002 [INF] Executed action method "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)", returned result "Microsoft.AspNetCore.Mvc.ObjectResult" in 21001.2137ms. (50a9e262)
+2019-04-28T23:01:51.9041433+03:00 0HLMC2H2A9NCQ:00000002 [INF] Executing JsonResult, writing value of type '"Microsoft.AspNetCore.Mvc.ObjectResult"'. (2f513669)
+2019-04-28T23:01:52.0367605+03:00 0HLMC2H2A9NCQ:00000002 [INF] Executed action "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)" in 21220.3691ms (afa2e885)
+2019-04-28T23:01:52.0729603+03:00 0HLMC2H2A9NCQ:00000002 [INF] Request finished in 21354.6022ms 200 application/json; charset=utf-8 (791a596a)
+2019-04-28T23:01:52.1534310+03:00 0HLMC2H2A9NCQ:00000003 [INF] Request starting HTTP/1.1 GET https://localhost:5001/favicon.ico   (ca22a1cb)
+2019-04-28T23:01:52.1539618+03:00 0HLMC2H2A9NCQ:00000003 [INF] Request finished in 0.5712ms 404  (791a596a)
+2019-04-28T23:07:08.5591156+03:00 0HLMC2KB3FIJK:00000001 [INF] Request starting HTTP/1.1 GET https://localhost:5001/api/routes   (ca22a1cb)
+2019-04-28T23:07:08.9319234+03:00 0HLMC2KB3FIJK:00000001 [INF] Request finished in 378.8353ms 404  (791a596a)
+2019-04-28T23:07:53.1497837+03:00 0HLMC2KB3FIJK:00000002 [INF] Request starting HTTP/1.1 GET https://localhost:5001/api/routes/GetRoute?from=VOZ&to=ERC   (ca22a1cb)
+2019-04-28T23:07:53.2407617+03:00 0HLMC2KB3FIJK:00000002 [INF] Route matched with "{action = \"GetRoute\", controller = \"Routes\"}". Executing action "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)" (a44c0341)
+2019-04-28T23:07:53.3085067+03:00 0HLMC2KB3FIJK:00000002 [INF] Executing action method "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)" with arguments (["VOZ", "ERC", "0"]) - Validation state: Valid (4e3479ed)
+2019-04-28T23:08:11.6174092+03:00 0HLMC2KB3FIJK:00000002 [ERR] Something went wrong. Request could not be completed (4f8efe7c)
+System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+   at System.Collections.Generic.List`1.RemoveAt(Int32 index)
+   at AirportRouteApi.BL.ApiClient.TrySearch(String from, String to, CancellationToken ct, Int32 attempt) in D:\fly\AirportRouteApi\AirportRouteApi\BL\ApiClient.cs:line 71
+   at AirportRouteApi.BL.ApiClient.TrySearch(String from, String to, CancellationToken ct, Int32 attempt) in D:\fly\AirportRouteApi\AirportRouteApi\BL\ApiClient.cs:line 65
+   at AirportRouteApi.BL.ApiClient.TrySearch(String from, String to, CancellationToken ct, Int32 attempt) in D:\fly\AirportRouteApi\AirportRouteApi\BL\ApiClient.cs:line 65
+   at AirportRouteApi.BL.ApiClient.GetRoutesByAirports(String from, String to, Int32 maxTransferCount, CancellationToken ct) in D:\fly\AirportRouteApi\AirportRouteApi\BL\ApiClient.cs:line 31
+   at AirportRouteApi.BL.RequestsManager.TrySetTask(String from, String to, Int32 maxTransferCount, String userAgent, String remoteAddress) in D:\fly\AirportRouteApi\AirportRouteApi\BL\RequestsManager.cs:line 30
+   at AirportRouteApi.Controllers.RoutesController.GetRoute(String from, String to, Int32 maxTransferCount) in D:\fly\AirportRouteApi\AirportRouteApi\Controllers\RoutesController.cs:line 46
+2019-04-28T23:08:11.6291560+03:00 0HLMC2KB3FIJK:00000002 [INF] Executed action method "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)", returned result "Microsoft.AspNetCore.Mvc.ObjectResult" in 18316.2754ms. (50a9e262)
+2019-04-28T23:08:11.6609528+03:00 0HLMC2KB3FIJK:00000002 [INF] Executing JsonResult, writing value of type '"Microsoft.AspNetCore.Mvc.ObjectResult"'. (2f513669)
+2019-04-28T23:08:11.8299190+03:00 0HLMC2KB3FIJK:00000002 [INF] Executed action "AirportRouteApi.Controllers.RoutesController.GetRoute (AirportRouteApi)" in 18580.0309ms (afa2e885)
+2019-04-28T23:08:11.8452511+03:00 0HLMC2KB3FIJK:00000002 [INF] Request finished in 18695.731ms 200 application/json; charset=utf-8 (791a596a)
+2019-04-28T23:08:11.9407833+03:00 0HLMC2KB3FIJK:00000003 [INF] Request starting HTTP/1.1 GET https://localhost:5001/favicon.ico   (ca22a1cb)
+2019-04-28T23:08:11.9411672+03:00 0HLMC2KB3FIJK:00000003 [INF] Request finished in 0.4283ms 404  (791a596a)
