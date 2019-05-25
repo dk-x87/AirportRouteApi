@@ -1,0 +1,27 @@
+[
+  {
+    "airline": "HQ",
+    "srcAirport": "CDG",
+    "destAirport": "ADB"
+  },
+  {
+    "airline": "L6",
+    "srcAirport": "CDG",
+    "destAirport": "CMN"
+  },
+  {
+    "airline": "QC",
+    "srcAirport": "CDG",
+    "destAirport": "NSI"
+  },
+  {
+    "airline": "QN",
+    "srcAirport": "CDG",
+    "destAirport": "EVN"
+  },
+  {
+    "airline": "W2",
+    "srcAirport": "CDG",
+    "destAirport": "KEF"
+  }
+]

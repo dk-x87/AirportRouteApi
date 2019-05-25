@@ -1,0 +1,17 @@
+[
+  {
+    "airline": "QC",
+    "srcAirport": "NSI",
+    "destAirport": "CDG"
+  },
+  {
+    "airline": "QC",
+    "srcAirport": "NSI",
+    "destAirport": "DLA"
+  },
+  {
+    "airline": "QC",
+    "srcAirport": "NSI",
+    "destAirport": "GOU"
+  }
+]

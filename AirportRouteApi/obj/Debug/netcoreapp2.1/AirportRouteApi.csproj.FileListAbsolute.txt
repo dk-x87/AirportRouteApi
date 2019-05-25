@@ -12,4 +12,3 @@ D:\fly\AirportRouteApi\AirportRouteApi\obj\Debug\netcoreapp2.1\AirportRouteApi.A
 D:\fly\AirportRouteApi\AirportRouteApi\obj\Debug\netcoreapp2.1\AirportRouteApi.RazorTargetAssemblyInfo.cache
 D:\fly\AirportRouteApi\AirportRouteApi\obj\Debug\netcoreapp2.1\AirportRouteApi.dll
 D:\fly\AirportRouteApi\AirportRouteApi\obj\Debug\netcoreapp2.1\AirportRouteApi.pdb
-D:\fly\AirportRouteApi\AirportRouteApi\obj\Debug\netcoreapp2.1\AirportRouteApi.csprojAssemblyReference.cache

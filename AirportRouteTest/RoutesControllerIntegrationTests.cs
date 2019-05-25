@@ -6,31 +6,19 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 
-namespace Tests
+namespace AirportRouteTest
 {
     [TestFixture]
     public class RoutesControllerIntegrationTests
     {
         private RoutesController controller;
-        private string routeUri = "https://homework.appulate.com/api/Route/outgoing?airport=";
-        private string airportUri = "https://homework.appulate.com/api/Airport/search?pattern=";
-        private string airlineUri = "https://homework.appulate.com/api/Airline/";
-        private int maxTransferCount = 3;
-        private int maxRequestCount = 3;
-        private string existRouteSrcAirport = "VOZ";
-        private string existRouteDestAirport = "VKO";
-        private string notExistRouteSrcAirport = "DAA";
-        private string notExistRouteDestAirport = "BIA";
-        private string multipleTransferRouteSrcAirport = "ACE";
-        private string multipleTransferRouteDestAirport = "FUE";
-        private string multipleTransferRouteMaxTransferCountSrcAirport = "EVN";
-        private string multipleTransferRouteMaxTransferCountDestAirport = "CAI";
-        private string notExistAirport = "DAQ";
 
         [SetUp]
         public void Setup()
         {
-            RequestsManager reqManager = new RequestsManager(new ApiClient(routeUri, airportUri, airlineUri, maxTransferCount, maxRequestCount) { });
+            IHttpSender sender = new HttpSender(TestConsts.RouteUri, TestConsts.AirportUri, TestConsts.AirlineUri, TestConsts.MaxRequestCount);
+            IApiClient apiClient = new ApiClient(sender, TestConsts.MaxTransferCount);
+            RequestsManager reqManager = new RequestsManager(apiClient);
             ILogger<RoutesController> log = new LoggerFactory().CreateLogger<RoutesController>();
 
             controller = new RoutesController(reqManager, log);
@@ -56,7 +44,7 @@ namespace Tests
         [Test]
         public void GetRouteEmptyToCodeTest()
         {
-            var response = controller.GetRoute(existRouteSrcAirport, string.Empty);
+            var response = controller.GetRoute(TestConsts.ExistRouteSrcAirport, string.Empty);
             Assert.IsNotNull(response);
             Assert.IsNull(response.Exception);
             Assert.IsNotNull(response.Result);
@@ -69,7 +57,7 @@ namespace Tests
         [Test]
         public void GetRouteEmptyFromCodeTest()
         {
-            var response = controller.GetRoute(string.Empty, existRouteSrcAirport);
+            var response = controller.GetRoute(string.Empty, TestConsts.ExistRouteSrcAirport);
             Assert.IsNotNull(response);
             Assert.IsNull(response.Exception);
             Assert.IsNotNull(response.Result);
@@ -82,7 +70,7 @@ namespace Tests
         [Test]
         public void GetRouteNotExistFromAirportTest()
         {
-            var response = controller.GetRoute(existRouteSrcAirport, notExistAirport);
+            var response = controller.GetRoute(TestConsts.ExistRouteSrcAirport, TestConsts.NotExistAirport);
             Assert.IsNotNull(response);
             Assert.IsNull(response.Exception);
             Assert.IsNotNull(response.Result);
@@ -95,7 +83,7 @@ namespace Tests
         [Test]
         public void GetRouteNotExistToAirportTest()
         {
-            var response = controller.GetRoute(notExistAirport, existRouteSrcAirport);
+            var response = controller.GetRoute(TestConsts.NotExistAirport, TestConsts.ExistRouteSrcAirport);
             Assert.IsNotNull(response);
             Assert.IsNull(response.Exception);
             Assert.IsNotNull(response.Result);
@@ -108,61 +96,61 @@ namespace Tests
         [Test]
         public void GetRouteExistAirportTest()
         {
-            var response = controller.GetRoute(existRouteSrcAirport, existRouteDestAirport);
+            var response = controller.GetRoute(TestConsts.ExistRouteSrcAirport, TestConsts.ExistRouteDestAirport);
             Assert.IsNotNull(response);
             Assert.IsNull(response.Exception);
             var result = response.Result;
             Assert.IsNotNull(result);
             Assert.IsNull(result.Error);
             Assert.IsNotNull(result.Routes);
-            Assert.AreEqual(result.Routes[0].SrcAirport, existRouteSrcAirport);
-            Assert.AreEqual(result.Routes[result.Routes.Count - 1].DestAirport, existRouteDestAirport);
+            Assert.AreEqual(result.Routes[0].SrcAirport, TestConsts.ExistRouteSrcAirport);
+            Assert.AreEqual(result.Routes[result.Routes.Count - 1].DestAirport, TestConsts.ExistRouteDestAirport);
         }
 
         [Test]
         public void GetRouteNotExistAirportTest()
         { 
-            var response = controller.GetRoute(notExistRouteSrcAirport, notExistRouteDestAirport);
+            var response = controller.GetRoute(TestConsts.NotExistRouteSrcAirport, TestConsts.NotExistRouteDestAirport);
             Assert.IsNotNull(response);
             Assert.IsNull(response.Exception);
             var result = response.Result;
             Assert.IsNotNull(result);
             Assert.IsNull(result.Error);
-            Assert.IsEmpty(result.Routes);
+            Assert.IsNull(result.Routes);
         }
 
         [Test]
         public void GetRouteMultipleTransferTest()
         {
-            var response = controller.GetRoute(multipleTransferRouteSrcAirport, multipleTransferRouteDestAirport);
+            var response = controller.GetRoute(TestConsts.MultipleTransferRouteSrcAirport1, TestConsts.MultipleTransferRouteDestAirport);
             Assert.IsNotNull(response);
             Assert.IsNull(response.Exception);
             var result = response.Result;
             Assert.IsNotNull(result);
             Assert.IsNull(result.Error);
             Assert.IsNotNull(result.Routes);
-            Assert.AreEqual(multipleTransferRouteSrcAirport, result.Routes[0].SrcAirport);
-            Assert.AreEqual(multipleTransferRouteDestAirport, result.Routes[result.Routes.Count - 1].DestAirport);
+            Assert.AreEqual(TestConsts.MultipleTransferRouteSrcAirport1, result.Routes[0].SrcAirport);
+            Assert.AreEqual(TestConsts.MultipleTransferRouteDestAirport, result.Routes[result.Routes.Count - 1].DestAirport);
             Assert.True(result.Routes.Count > 0);
         }
 
         [Test]
         public void GetRouteMultipleTransferWithMaxTransferTest()
         {
-            var response = controller.GetRoute(multipleTransferRouteMaxTransferCountSrcAirport, multipleTransferRouteMaxTransferCountDestAirport, 1);
+            var response = controller.GetRoute(TestConsts.MultipleTransferRouteMaxTransferCountSrcAirport1, TestConsts.MultipleTransferRouteMaxTransferCountDestAirport, 1);
             Assert.IsNotNull(response);
             Assert.IsNull(response.Exception);
             var result = response.Result;
             Assert.IsNotNull(result);
             Assert.IsNull(result.Error);
-            Assert.IsEmpty(result.Routes);
+            Assert.IsNull(result.Routes);
         }
 
         [Test]
         public void StopRouteProcessingTest()
         {
-            controller.GetRoute(existRouteSrcAirport, existRouteDestAirport);
-            var response = controller.StopRouteProcessing(existRouteSrcAirport, existRouteDestAirport);
+            controller.GetRoute(TestConsts.ExistRouteSrcAirport, TestConsts.ExistRouteDestAirport);
+            var response = controller.StopRouteProcessing(TestConsts.ExistRouteSrcAirport, TestConsts.ExistRouteDestAirport);
             Assert.IsNotNull(response);
             var result = response;
             Assert.IsNotNull(result);

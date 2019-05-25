@@ -37,7 +37,7 @@ namespace AirportRouteApi.Controllers
         {
             try
             {
-                return await requestsManager.TrySetTask(from, to, maxTransferCount, userAgent, remoteAddress);
+                return await requestsManager.TrySetTask(from.ToUpper(), to.ToUpper(), maxTransferCount, userAgent, remoteAddress);
             }
             catch (Exception ex)
             {

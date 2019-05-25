@@ -53,7 +53,7 @@ namespace AirportRouteApi
             });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddTransient<IRequestsManager, RequestsManager>();
-            services.AddTransient<IApiClient>(x => new ApiClient(routeUri, airportUri, airlineUri, maxTransferCount, maxRequestCount));
+            services.AddTransient<IApiClient>(x => new ApiClient(new HttpSender(routeUri, airportUri, airlineUri, maxRequestCount), maxRequestCount));
             services.Configure<IISOptions>(options =>
             {
                 options.ForwardClientCertificate = false;

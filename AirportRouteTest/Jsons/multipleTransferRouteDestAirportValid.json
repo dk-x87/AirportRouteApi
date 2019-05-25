@@ -1,0 +1,47 @@
+﻿[
+  {
+    "name": "Fürstenfeldbruck Airport",
+    "alias": "FEL",
+    "city": "Fuerstenfeldbruck",
+    "country": "Germany",
+    "latitude": 48.2055549621582,
+    "longitude": 11.26694393157959,
+    "altitude": 1703
+  },
+  {
+    "name": "Fuerteventura Airport",
+    "alias": "FUE",
+    "city": "Fuerteventura",
+    "country": "Spain",
+    "latitude": 28.452699661254883,
+    "longitude": -13.863800048828125,
+    "altitude": 85
+  },
+  {
+    "name": "Dr. Arturo H. Illia Airport",
+    "alias": "\\N",
+    "city": "Fuerte Gral Roca",
+    "country": "Argentina",
+    "latitude": -39.0007019043,
+    "longitude": -67.6204986572,
+    "altitude": 852
+  },
+  {
+    "name": "Fuerstenwalde Airport",
+    "alias": "\\N",
+    "city": "Furstenwalde",
+    "country": "Germany",
+    "latitude": 52.3905982971,
+    "longitude": 14.0972003937,
+    "altitude": 184
+  },
+  {
+    "name": "Fuentemilanos Airport",
+    "alias": "\\N",
+    "city": "Segovia",
+    "country": "Spain",
+    "latitude": 40.888610839799995,
+    "longitude": -4.23750019073,
+    "altitude": 3307
+  }
+]

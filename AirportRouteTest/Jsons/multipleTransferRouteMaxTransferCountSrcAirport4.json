@@ -1,0 +1,12 @@
+[
+  {
+    "airline": "QC",
+    "srcAirport": "GOU",
+    "destAirport": "NDJ"
+  },
+  {
+    "airline": "QC",
+    "srcAirport": "GOU",
+    "destAirport": "NSI"
+  }
+]

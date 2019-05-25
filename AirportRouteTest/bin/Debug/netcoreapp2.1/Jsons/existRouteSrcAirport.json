@@ -1,0 +1,27 @@
+[
+  {
+    "airline": "UR",
+    "srcAirport": "VOZ",
+    "destAirport": "VKO"
+  },
+  {
+    "airline": "YQ",
+    "srcAirport": "VOZ",
+    "destAirport": "DME"
+  },
+  {
+    "airline": "YQ",
+    "srcAirport": "VOZ",
+    "destAirport": "EVN"
+  },
+  {
+    "airline": "YQ",
+    "srcAirport": "VOZ",
+    "destAirport": "LED"
+  },
+  {
+    "airline": "YQ",
+    "srcAirport": "VOZ",
+    "destAirport": "MUC"
+  }
+]

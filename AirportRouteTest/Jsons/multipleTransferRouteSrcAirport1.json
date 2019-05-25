@@ -1,0 +1,47 @@
+[
+  {
+    "airline": "HQ",
+    "srcAirport": "ACE",
+    "destAirport": "FUE"
+  },
+  {
+    "airline": "TO",
+    "srcAirport": "ACE",
+    "destAirport": "BHX"
+  },
+  {
+    "airline": "TO",
+    "srcAirport": "ACE",
+    "destAirport": "EMA"
+  },
+  {
+    "airline": "TO",
+    "srcAirport": "ACE",
+    "destAirport": "GLA"
+  },
+  {
+    "airline": "TO",
+    "srcAirport": "ACE",
+    "destAirport": "LGW"
+  },
+  {
+    "airline": "TO",
+    "srcAirport": "ACE",
+    "destAirport": "LTN"
+  },
+  {
+    "airline": "TO",
+    "srcAirport": "ACE",
+    "destAirport": "MAN"
+  },
+  {
+    "airline": "TO",
+    "srcAirport": "ACE",
+    "destAirport": "NCL"
+  },
+  {
+    "airline": "TO",
+    "srcAirport": "ACE",
+    "destAirport": "STN"
+  }
+]
