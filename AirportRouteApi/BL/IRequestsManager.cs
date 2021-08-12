@@ -1,14 +1,13 @@
 ﻿using AirportRouteApi.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace AirportRouteApi.BL
 {
     public interface IRequestsManager
     {
-        Task<Result> TrySetTask(string from, string to, int maxTransferCount, string userAgent, string remoteAddress);
+        Task<Responce<List<Route>>> TrySetTask(string from, string to, int maxTransferCount, string userAgent, string remoteAddress);
 
-        Result CancelTask(string from, string to, string userAgent, string remoteAddress);
-
-        int ProcessingsTasksCount();
+        Responce<string> CancelTask(string from, string to, string userAgent, string remoteAddress);
     }
 }

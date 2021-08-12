@@ -1,26 +1,20 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AirportRouteApi.BL;
 using AirportRouteApi.Models;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 
 namespace AirportRouteApi.Controllers
 {
     [Route("api/[controller]")]
     public class RoutesController : Controller
     {
-        public RoutesController(IRequestsManager reqManager, ILogger<RoutesController> log)
+        public RoutesController(IRequestsManager reqManager)
         {
             requestsManager = reqManager;
-            logger = log;
         }
 
         private readonly IRequestsManager requestsManager;
-        private readonly ILogger logger;
         private string userAgent;
         private string remoteAddress;
 
@@ -33,44 +27,28 @@ namespace AirportRouteApi.Controllers
 
         [Route("GetRoute")]
         [HttpGet]
-        public async Task<Result> GetRoute(string from, string to, int maxTransferCount = 0)
+        public async Task<ActionResult> GetRoute(string from, string to, int maxTransferCount = 0)
         {
-            try
-            {
-                return await requestsManager.TrySetTask(from.ToUpper(), to.ToUpper(), maxTransferCount, userAgent, remoteAddress);
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, ErrorMessages.ExceptionError);
-                return new Result() { Error = ErrorMessages.ExceptionError };
-            }
+            return ProcessResponce(await requestsManager.TrySetTask(from, to, maxTransferCount, userAgent, remoteAddress));
         }
 
         [Route("StopRouteProcessing")]
         [HttpGet]
-        public Result StopRouteProcessing(string from, string to)
+        public ActionResult StopRouteProcessing(string from, string to)
         {
-            try
-            {
-                return requestsManager.CancelTask(from, to, userAgent, remoteAddress);
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, ErrorMessages.ExceptionError);
-                return new Result() { Error = ErrorMessages.ExceptionError };
-            }
+            return ProcessResponce(requestsManager.CancelTask(from, to, userAgent, remoteAddress));
         }
 
-        [Route("error")]
-        public Result OnError()
+        private ActionResult ProcessResponce<T>(Responce<T> responce)
         {
-            var ex = HttpContext.Features.Get<IExceptionHandlerFeature>();
-            if (ex != null)
+            if (responce.Error != null)
             {
-                logger.LogError(ex.Error, ErrorMessages.ExceptionError);
-                return new Result() { Error = ErrorMessages.ExceptionError };
+                return StatusCode((int)responce.Error.Code, responce.Error.Message ?? responce.Error.Exception.Message);
             }
-            else return null;
+            else
+            {
+                return new OkObjectResult(responce.Data);
+            }
         }
 
     }

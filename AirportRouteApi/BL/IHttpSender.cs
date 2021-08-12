@@ -1,4 +1,6 @@
-﻿using System.Net.Http;
+﻿using AirportRouteApi.Models;
+using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -6,11 +8,11 @@ namespace AirportRouteApi.BL
 {
     public interface IHttpSender
     {
-        Task<HttpResponseMessage> GetDataForRoute(string from, CancellationToken ct);
+        Task<List<Route>> GetDataForRoute(string from, CancellationToken ct);
 
-        Task<HttpResponseMessage> GetDataForAirport(string alias, CancellationToken ct);
+        Task<List<Airport>> GetDataForAirport(string alias, CancellationToken ct);
 
-        Task<HttpResponseMessage> GetDataForAirline(string alias, CancellationToken ct);
+        Task<List<Airline>> GetDataForAirline(string alias, CancellationToken ct);
 
     }
 }

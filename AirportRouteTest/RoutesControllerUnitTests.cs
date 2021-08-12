@@ -1,5 +1,6 @@
 ﻿using AirportRouteApi;
 using AirportRouteApi.BL;
+using AirportRouteApi.BL.Implementations;
 using AirportRouteApi.Controllers;
 using AirportRouteApi.Models;
 using Microsoft.AspNetCore.Http;
@@ -10,6 +11,7 @@ using Newtonsoft.Json;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,77 +23,79 @@ namespace AirportRouteTest
     {
         private RoutesController controller;
 
-        private string LoadJson(string filename)
+        private T LoadDataFromJson<T>(string filename)
         {
+            string content = string.Empty;
             using (StreamReader r = new StreamReader(filename))
             {
-                return r.ReadToEnd();
+                content = r.ReadToEnd();
             }
+            return JsonConvert.DeserializeObject<T>(content);
         }
 
 
         private IHttpSender MockIHttpSender()
         {
-            HttpContent existRouteSrcAirportValidCntt = new StringContent(LoadJson("Jsons/existRouteSrcAirportValid.json"));
-            HttpContent existRouteDestAirportValidCntt = new StringContent(LoadJson("Jsons/existRouteDestAirportValid.json"));
-            HttpContent existRouteSrcAirportCntt = new StringContent(LoadJson("Jsons/existRouteSrcAirport.json"));
-            HttpContent existRouteAirlineCntt = new StringContent(LoadJson("Jsons/existRouteAirline.json"));
+            var existRouteSrcAirportValid = LoadDataFromJson<List<Airport>>("Jsons/existRouteSrcAirportValid.json");
+            var existRouteDestAirportValid = LoadDataFromJson<List<Airport>>("Jsons/existRouteDestAirportValid.json");
+            var existRouteSrcAirport = LoadDataFromJson<List<Route>>("Jsons/existRouteSrcAirport.json");
+            var existRouteAirline = LoadDataFromJson<List<Airline>>("Jsons/existRouteAirline.json");
 
-            HttpContent notExistRouteSrcAirportValidCntt = new StringContent(LoadJson("Jsons/notExistRouteSrcAirportValid.json"));
-            HttpContent notExistRouteDestAirportValidCntt = new StringContent(LoadJson("Jsons/notExistRouteDestAirportValid.json"));
-            HttpContent notExistRouteSrcAirportCntt = new StringContent(LoadJson("Jsons/notExistRouteSrcAirport.json"));
+            var notExistRouteSrcAirportValid= LoadDataFromJson<List<Airport>>("Jsons/notExistRouteSrcAirportValid.json");
+            var notExistRouteDestAirportValid= LoadDataFromJson<List<Airport>>("Jsons/notExistRouteDestAirportValid.json");
+            var notExistRouteSrcAirport= LoadDataFromJson<List<Route>>("Jsons/notExistRouteSrcAirport.json");
 
-            HttpContent multipleTransferRouteSrcAirport1ValidCntt = new StringContent(LoadJson("Jsons/multipleTransferRouteSrcAirport1Valid.json"));
-            HttpContent multipleTransferRouteSrcAirport2ValidCntt = new StringContent(LoadJson("Jsons/multipleTransferRouteSrcAirport2Valid.json"));
-            HttpContent multipleTransferRouteDestAirportValidCntt = new StringContent(LoadJson("Jsons/multipleTransferRouteDestAirportValid.json"));
-            HttpContent multipleTransferRouteSrcAirport1Cntt = new StringContent(LoadJson("Jsons/multipleTransferRouteSrcAirport1.json"));
-            HttpContent multipleTransferRouteSrcAirport2Cntt = new StringContent(LoadJson("Jsons/multipleTransferRouteSrcAirport2.json"));
-            HttpContent multipleTransferRouteAirline1Cntt = new StringContent(LoadJson("Jsons/multipleTransferRouteAirline1.json"));
-            HttpContent multipleTransferRouteAirline2Cntt = new StringContent(LoadJson("Jsons/multipleTransferRouteAirline2.json"));
+            var multipleTransferRouteSrcAirport1Valid = LoadDataFromJson<List<Airport>>("Jsons/multipleTransferRouteSrcAirport1Valid.json");
+            var multipleTransferRouteSrcAirport2Valid = LoadDataFromJson<List<Airport>>("Jsons/multipleTransferRouteSrcAirport2Valid.json");
+            var multipleTransferRouteDestAirportValid = LoadDataFromJson<List<Airport>>("Jsons/multipleTransferRouteDestAirportValid.json");
+            var multipleTransferRouteSrcAirport1 = LoadDataFromJson<List<Route>>("Jsons/multipleTransferRouteSrcAirport1.json");
+            var multipleTransferRouteSrcAirport2 = LoadDataFromJson<List<Route>>("Jsons/multipleTransferRouteSrcAirport2.json");
+            var multipleTransferRouteAirline1 = LoadDataFromJson<List<Airline>>("Jsons/multipleTransferRouteAirline1.json");
+            var multipleTransferRouteAirline2 = LoadDataFromJson<List<Airline>>("Jsons/multipleTransferRouteAirline2.json");
 
-            HttpContent multipleTransferRouteMaxTransferCountSrcAirport1ValidCntt = new StringContent(LoadJson("Jsons/multipleTransferRouteMaxTransferCountSrcAirport1Valid.json"));
-            HttpContent multipleTransferRouteMaxTransferCountSrcAirport2ValidCntt = new StringContent(LoadJson("Jsons/multipleTransferRouteMaxTransferCountSrcAirport2Valid.json"));
-            HttpContent multipleTransferRouteMaxTransferCountSrcAirport3ValidCntt = new StringContent(LoadJson("Jsons/multipleTransferRouteMaxTransferCountSrcAirport3Valid.json"));
-            HttpContent multipleTransferRouteMaxTransferCountSrcAirport4ValidCntt = new StringContent(LoadJson("Jsons/multipleTransferRouteMaxTransferCountSrcAirport4Valid.json"));
-            HttpContent multipleTransferRouteMaxTransferCountDestAirportValidCntt = new StringContent(LoadJson("Jsons/multipleTransferRouteMaxTransferCountDestAirportValid.json"));
-            HttpContent multipleTransferRouteMaxTransferCountSrcAirport1Cntt = new StringContent(LoadJson("Jsons/multipleTransferRouteMaxTransferCountSrcAirport1.json"));
-            HttpContent multipleTransferRouteMaxTransferCountSrcAirport2Cntt = new StringContent(LoadJson("Jsons/multipleTransferRouteMaxTransferCountSrcAirport2.json"));
-            HttpContent multipleTransferRouteMaxTransferCountSrcAirport3Cntt = new StringContent(LoadJson("Jsons/multipleTransferRouteMaxTransferCountSrcAirport3.json"));
-            HttpContent multipleTransferRouteMaxTransferCountSrcAirport4Cntt = new StringContent(LoadJson("Jsons/multipleTransferRouteMaxTransferCountSrcAirport4.json"));
-            HttpContent multipleTransferRouteMaxTransferCountAirline1Cntt = new StringContent(LoadJson("Jsons/multipleTransferRouteMaxTransferCountAirline1.json"));
+            var multipleTransferRouteMaxTransferCountSrcAirport1Valid = LoadDataFromJson<List<Airport>>("Jsons/multipleTransferRouteMaxTransferCountSrcAirport1Valid.json");
+            var multipleTransferRouteMaxTransferCountSrcAirport2Valid = LoadDataFromJson<List<Airport>>("Jsons/multipleTransferRouteMaxTransferCountSrcAirport2Valid.json");
+            var multipleTransferRouteMaxTransferCountSrcAirport3Valid = LoadDataFromJson<List<Airport>>("Jsons/multipleTransferRouteMaxTransferCountSrcAirport3Valid.json");
+            var multipleTransferRouteMaxTransferCountSrcAirport4Valid = LoadDataFromJson<List<Airport>>("Jsons/multipleTransferRouteMaxTransferCountSrcAirport4Valid.json");
+            var multipleTransferRouteMaxTransferCountDestAirportValid = LoadDataFromJson<List<Airport>>("Jsons/multipleTransferRouteMaxTransferCountDestAirportValid.json");
+            var multipleTransferRouteMaxTransferCountSrcAirport1 = LoadDataFromJson<List<Route>>("Jsons/multipleTransferRouteMaxTransferCountSrcAirport1.json");
+            var multipleTransferRouteMaxTransferCountSrcAirport2 = LoadDataFromJson<List<Route>>("Jsons/multipleTransferRouteMaxTransferCountSrcAirport2.json");
+            var multipleTransferRouteMaxTransferCountSrcAirport3 = LoadDataFromJson<List<Route>>("Jsons/multipleTransferRouteMaxTransferCountSrcAirport3.json");
+            var multipleTransferRouteMaxTransferCountSrcAirport4 = LoadDataFromJson<List<Route>>("Jsons/multipleTransferRouteMaxTransferCountSrcAirport4.json");
+            var multipleTransferRouteMaxTransferCountAirline1 = LoadDataFromJson<List<Airline>>("Jsons/multipleTransferRouteMaxTransferCountAirline1.json");
 
-            HttpContent notExistAirportCnt = new StringContent(LoadJson("Jsons/notExistAirport.json"));
+            var notExistAirport = LoadDataFromJson<List<Airport>>("Jsons/notExistAirport.json");
 
             Mock<IHttpSender> mockContainer = new Mock<IHttpSender>();
-            mockContainer.Setup(x => x.GetDataForAirport(TestConsts.ExistRouteSrcAirport, It.IsAny<CancellationToken>())).Returns(Task.FromResult(new HttpResponseMessage() { Content = existRouteSrcAirportValidCntt }));
-            mockContainer.Setup(x => x.GetDataForAirport(TestConsts.ExistRouteDestAirport, It.IsAny<CancellationToken>())).Returns(Task.FromResult(new HttpResponseMessage() { Content = existRouteDestAirportValidCntt }));
-            mockContainer.Setup(x => x.GetDataForRoute(TestConsts.ExistRouteSrcAirport, It.IsAny<CancellationToken>())).Returns(Task.FromResult(new HttpResponseMessage() { Content = existRouteSrcAirportCntt }));
-            mockContainer.Setup(x => x.GetDataForAirline(TestConsts.ExistRouteAirline, It.IsAny<CancellationToken>())).Returns(Task.FromResult(new HttpResponseMessage() { Content = existRouteAirlineCntt }));
+            mockContainer.Setup(x => x.GetDataForAirport(TestConsts.ExistRouteSrcAirport, It.IsAny<CancellationToken>())).Returns(Task.FromResult(existRouteSrcAirportValid));
+            mockContainer.Setup(x => x.GetDataForAirport(TestConsts.ExistRouteDestAirport, It.IsAny<CancellationToken>())).Returns(Task.FromResult(existRouteDestAirportValid ));
+            mockContainer.Setup(x => x.GetDataForRoute(TestConsts.ExistRouteSrcAirport, It.IsAny<CancellationToken>())).Returns(Task.FromResult(existRouteSrcAirport ));
+            mockContainer.Setup(x => x.GetDataForAirline(TestConsts.ExistRouteAirline, It.IsAny<CancellationToken>())).Returns(Task.FromResult(existRouteAirline ));
 
-            mockContainer.Setup(x => x.GetDataForAirport(TestConsts.NotExistRouteSrcAirport, It.IsAny<CancellationToken>())).Returns(Task.FromResult(new HttpResponseMessage() { Content = notExistRouteSrcAirportValidCntt }));
-            mockContainer.Setup(x => x.GetDataForAirport(TestConsts.NotExistRouteDestAirport, It.IsAny<CancellationToken>())).Returns(Task.FromResult(new HttpResponseMessage() { Content = notExistRouteDestAirportValidCntt }));
-            mockContainer.Setup(x => x.GetDataForRoute(TestConsts.NotExistRouteSrcAirport, It.IsAny<CancellationToken>())).Returns(Task.FromResult(new HttpResponseMessage() { Content = notExistRouteSrcAirportCntt }));
+            mockContainer.Setup(x => x.GetDataForAirport(TestConsts.NotExistRouteSrcAirport, It.IsAny<CancellationToken>())).Returns(Task.FromResult(notExistRouteSrcAirportValid ));
+            mockContainer.Setup(x => x.GetDataForAirport(TestConsts.NotExistRouteDestAirport, It.IsAny<CancellationToken>())).Returns(Task.FromResult(notExistRouteDestAirportValid ));
+            mockContainer.Setup(x => x.GetDataForRoute(TestConsts.NotExistRouteSrcAirport, It.IsAny<CancellationToken>())).Returns(Task.FromResult(notExistRouteSrcAirport ));
 
-            mockContainer.Setup(x => x.GetDataForAirport(TestConsts.MultipleTransferRouteSrcAirport1, It.IsAny<CancellationToken>())).Returns(Task.FromResult(new HttpResponseMessage() { Content = multipleTransferRouteSrcAirport1ValidCntt }));
-            mockContainer.Setup(x => x.GetDataForAirport(TestConsts.MultipleTransferRouteSrcAirport2, It.IsAny<CancellationToken>())).Returns(Task.FromResult(new HttpResponseMessage() { Content = multipleTransferRouteSrcAirport2ValidCntt }));
-            mockContainer.Setup(x => x.GetDataForAirport(TestConsts.MultipleTransferRouteDestAirport, It.IsAny<CancellationToken>())).Returns(Task.FromResult(new HttpResponseMessage() { Content = multipleTransferRouteDestAirportValidCntt }));
-            mockContainer.Setup(x => x.GetDataForRoute(TestConsts.MultipleTransferRouteSrcAirport1, It.IsAny<CancellationToken>())).Returns(Task.FromResult(new HttpResponseMessage() { Content = multipleTransferRouteSrcAirport1Cntt }));
-            mockContainer.Setup(x => x.GetDataForRoute(TestConsts.MultipleTransferRouteSrcAirport2, It.IsAny<CancellationToken>())).Returns(Task.FromResult(new HttpResponseMessage() { Content = multipleTransferRouteSrcAirport2Cntt }));
-            mockContainer.Setup(x => x.GetDataForAirline(TestConsts.MultipleTransferRouteAirline1, It.IsAny<CancellationToken>())).Returns(Task.FromResult(new HttpResponseMessage() { Content = multipleTransferRouteAirline1Cntt }));
-            mockContainer.Setup(x => x.GetDataForAirline(TestConsts.MultipleTransferRouteAirline2, It.IsAny<CancellationToken>())).Returns(Task.FromResult(new HttpResponseMessage() { Content = multipleTransferRouteAirline2Cntt }));
+            mockContainer.Setup(x => x.GetDataForAirport(TestConsts.MultipleTransferRouteSrcAirport1, It.IsAny<CancellationToken>())).Returns(Task.FromResult(multipleTransferRouteSrcAirport1Valid ));
+            mockContainer.Setup(x => x.GetDataForAirport(TestConsts.MultipleTransferRouteSrcAirport2, It.IsAny<CancellationToken>())).Returns(Task.FromResult(multipleTransferRouteSrcAirport2Valid ));
+            mockContainer.Setup(x => x.GetDataForAirport(TestConsts.MultipleTransferRouteDestAirport, It.IsAny<CancellationToken>())).Returns(Task.FromResult(multipleTransferRouteDestAirportValid ));
+            mockContainer.Setup(x => x.GetDataForRoute(TestConsts.MultipleTransferRouteSrcAirport1, It.IsAny<CancellationToken>())).Returns(Task.FromResult(multipleTransferRouteSrcAirport1 ));
+            mockContainer.Setup(x => x.GetDataForRoute(TestConsts.MultipleTransferRouteSrcAirport2, It.IsAny<CancellationToken>())).Returns(Task.FromResult(multipleTransferRouteSrcAirport2 ));
+            mockContainer.Setup(x => x.GetDataForAirline(TestConsts.MultipleTransferRouteAirline1, It.IsAny<CancellationToken>())).Returns(Task.FromResult(multipleTransferRouteAirline1 ));
+            mockContainer.Setup(x => x.GetDataForAirline(TestConsts.MultipleTransferRouteAirline2, It.IsAny<CancellationToken>())).Returns(Task.FromResult(multipleTransferRouteAirline2 ));
 
-            mockContainer.Setup(x => x.GetDataForAirport(TestConsts.MultipleTransferRouteMaxTransferCountSrcAirport1, It.IsAny<CancellationToken>())).Returns(Task.FromResult(new HttpResponseMessage() { Content = multipleTransferRouteMaxTransferCountSrcAirport1ValidCntt }));
-            mockContainer.Setup(x => x.GetDataForAirport(TestConsts.MultipleTransferRouteMaxTransferCountSrcAirport2, It.IsAny<CancellationToken>())).Returns(Task.FromResult(new HttpResponseMessage() { Content = multipleTransferRouteMaxTransferCountSrcAirport2ValidCntt }));
-            mockContainer.Setup(x => x.GetDataForAirport(TestConsts.MultipleTransferRouteMaxTransferCountSrcAirport3, It.IsAny<CancellationToken>())).Returns(Task.FromResult(new HttpResponseMessage() { Content = multipleTransferRouteMaxTransferCountSrcAirport3ValidCntt }));
-            mockContainer.Setup(x => x.GetDataForAirport(TestConsts.MultipleTransferRouteMaxTransferCountSrcAirport4, It.IsAny<CancellationToken>())).Returns(Task.FromResult(new HttpResponseMessage() { Content = multipleTransferRouteMaxTransferCountSrcAirport4ValidCntt }));
-            mockContainer.Setup(x => x.GetDataForAirport(TestConsts.MultipleTransferRouteMaxTransferCountDestAirport, It.IsAny<CancellationToken>())).Returns(Task.FromResult(new HttpResponseMessage() { Content = multipleTransferRouteMaxTransferCountDestAirportValidCntt }));
-            mockContainer.Setup(x => x.GetDataForRoute(TestConsts.MultipleTransferRouteMaxTransferCountSrcAirport1, It.IsAny<CancellationToken>())).Returns(Task.FromResult(new HttpResponseMessage() { Content = multipleTransferRouteMaxTransferCountSrcAirport1Cntt }));
-            mockContainer.Setup(x => x.GetDataForRoute(TestConsts.MultipleTransferRouteMaxTransferCountSrcAirport2, It.IsAny<CancellationToken>())).Returns(Task.FromResult(new HttpResponseMessage() { Content = multipleTransferRouteMaxTransferCountSrcAirport1Cntt }));
-            mockContainer.Setup(x => x.GetDataForRoute(TestConsts.MultipleTransferRouteMaxTransferCountSrcAirport3, It.IsAny<CancellationToken>())).Returns(Task.FromResult(new HttpResponseMessage() { Content = multipleTransferRouteMaxTransferCountSrcAirport1Cntt }));
-            mockContainer.Setup(x => x.GetDataForRoute(TestConsts.MultipleTransferRouteMaxTransferCountSrcAirport4, It.IsAny<CancellationToken>())).Returns(Task.FromResult(new HttpResponseMessage() { Content = multipleTransferRouteMaxTransferCountSrcAirport1Cntt }));
-            mockContainer.Setup(x => x.GetDataForAirline(TestConsts.MultipleTransferRouteMaxTransferCountAirline1, It.IsAny<CancellationToken>())).Returns(Task.FromResult(new HttpResponseMessage() { Content = multipleTransferRouteMaxTransferCountAirline1Cntt }));
+            mockContainer.Setup(x => x.GetDataForAirport(TestConsts.MultipleTransferRouteMaxTransferCountSrcAirport1, It.IsAny<CancellationToken>())).Returns(Task.FromResult(multipleTransferRouteMaxTransferCountSrcAirport1Valid ));
+            mockContainer.Setup(x => x.GetDataForAirport(TestConsts.MultipleTransferRouteMaxTransferCountSrcAirport2, It.IsAny<CancellationToken>())).Returns(Task.FromResult(multipleTransferRouteMaxTransferCountSrcAirport2Valid ));
+            mockContainer.Setup(x => x.GetDataForAirport(TestConsts.MultipleTransferRouteMaxTransferCountSrcAirport3, It.IsAny<CancellationToken>())).Returns(Task.FromResult(multipleTransferRouteMaxTransferCountSrcAirport3Valid ));
+            mockContainer.Setup(x => x.GetDataForAirport(TestConsts.MultipleTransferRouteMaxTransferCountSrcAirport4, It.IsAny<CancellationToken>())).Returns(Task.FromResult(multipleTransferRouteMaxTransferCountSrcAirport4Valid ));
+            mockContainer.Setup(x => x.GetDataForAirport(TestConsts.MultipleTransferRouteMaxTransferCountDestAirport, It.IsAny<CancellationToken>())).Returns(Task.FromResult(multipleTransferRouteMaxTransferCountDestAirportValid ));
+            mockContainer.Setup(x => x.GetDataForRoute(TestConsts.MultipleTransferRouteMaxTransferCountSrcAirport1, It.IsAny<CancellationToken>())).Returns(Task.FromResult(multipleTransferRouteMaxTransferCountSrcAirport1 ));
+            mockContainer.Setup(x => x.GetDataForRoute(TestConsts.MultipleTransferRouteMaxTransferCountSrcAirport2, It.IsAny<CancellationToken>())).Returns(Task.FromResult(multipleTransferRouteMaxTransferCountSrcAirport1 ));
+            mockContainer.Setup(x => x.GetDataForRoute(TestConsts.MultipleTransferRouteMaxTransferCountSrcAirport3, It.IsAny<CancellationToken>())).Returns(Task.FromResult(multipleTransferRouteMaxTransferCountSrcAirport1 ));
+            mockContainer.Setup(x => x.GetDataForRoute(TestConsts.MultipleTransferRouteMaxTransferCountSrcAirport4, It.IsAny<CancellationToken>())).Returns(Task.FromResult(multipleTransferRouteMaxTransferCountSrcAirport1 ));
+            mockContainer.Setup(x => x.GetDataForAirline(TestConsts.MultipleTransferRouteMaxTransferCountAirline1, It.IsAny<CancellationToken>())).Returns(Task.FromResult(multipleTransferRouteMaxTransferCountAirline1 ));
 
-            mockContainer.Setup(x => x.GetDataForAirport(TestConsts.NotExistAirport, It.IsAny<CancellationToken>())).Returns(Task.FromResult(new HttpResponseMessage() { Content = notExistAirportCnt }));
+            mockContainer.Setup(x => x.GetDataForAirport(TestConsts.NotExistAirport, It.IsAny<CancellationToken>())).Returns(Task.FromResult(notExistAirport));
             return mockContainer.Object;
         }
 
@@ -99,11 +103,16 @@ namespace AirportRouteTest
         public void Setup()
         {
             IHttpSender sender = MockIHttpSender();
-            IApiClient apiClient = new ApiClient(sender, TestConsts.MaxTransferCount);
-            RequestsManager reqManager = new RequestsManager(apiClient);
-            ILogger<RoutesController> log = new LoggerFactory().CreateLogger<RoutesController>();
+            IApiClient apiClient = new ApiClient(sender);
+            ILogger<RequestsManager> log = new LoggerFactory().CreateLogger<RequestsManager>();
+            RequestParams requestParams = new RequestParams()
+            {
+                MaxConcurrentRequests = TestConsts.MaxRequestCount,
+                MaxTransferCount = TestConsts.MaxTransferCount
+            };
+            RequestsManager reqManager = new RequestsManager(apiClient, requestParams, log);
 
-            controller = new RoutesController(reqManager, log);
+            controller = new RoutesController(reqManager);
             controller.ControllerContext = new ControllerContext();
             controller.ControllerContext.HttpContext = new DefaultHttpContext();
             controller.HttpContext.Request.Headers["user-agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36";
@@ -111,121 +120,92 @@ namespace AirportRouteTest
         }
 
         [Test]
-        public void GetRouteEmptyFromToCodesTest()
+        public async Task GetRouteEmptyFromToCodesTest()
         {
-            var response = controller.GetRoute(string.Empty, string.Empty);
+            var response = await controller.GetRoute(string.Empty, string.Empty);
             Assert.IsNotNull(response);
-            Assert.IsNull(response.Exception);
-            Assert.IsNotNull(response.Result);
-            var result = response.Result;
-            Assert.IsNotNull(result);
-            Assert.IsNull(result.Routes);
-            Assert.AreEqual(result.Error, ErrorMessages.EmptyCodes);
+            var result = (ObjectResult)response;
+            Assert.AreEqual((int)HttpStatusCode.Conflict, result.StatusCode);
+            Assert.AreEqual(ErrorMessages.EmptyCodes, result.Value);
         }
 
         [Test]
-        public void GetRouteEmptyToCodeTest()
+        public async Task GetRouteEmptyToCodeTest()
         {
-            var response = controller.GetRoute(TestConsts.ExistRouteSrcAirport, string.Empty);
-            Assert.IsNotNull(response);
-            Assert.IsNull(response.Exception);
-            Assert.IsNotNull(response.Result);
-            var result = response.Result;
-            Assert.IsNotNull(result);
-            Assert.IsNull(result.Routes);
-            Assert.AreEqual(result.Error, ErrorMessages.EmptyCodes);
+            var response = await controller.GetRoute(TestConsts.ExistRouteSrcAirport, string.Empty);
+            var result = (ObjectResult)response;
+            Assert.AreEqual((int)HttpStatusCode.Conflict, result.StatusCode);
+            Assert.AreEqual(ErrorMessages.EmptyCodes, result.Value);
+        }
+        
+        [Test]
+        public async Task GetRouteEmptyFromCodeTest()
+        {
+            var response = await controller.GetRoute(string.Empty, TestConsts.ExistRouteSrcAirport);
+            var result = (ObjectResult)response;
+            Assert.AreEqual((int)HttpStatusCode.Conflict, result.StatusCode);
+            Assert.AreEqual(result.Value, ErrorMessages.EmptyCodes);
         }
 
         [Test]
-        public void GetRouteEmptyFromCodeTest()
+        public async Task GetRouteNotExistFromAirportTest()
         {
-            var response = controller.GetRoute(string.Empty, TestConsts.ExistRouteSrcAirport);
-            Assert.IsNotNull(response);
-            Assert.IsNull(response.Exception);
-            Assert.IsNotNull(response.Result);
-            var result = response.Result;
-            Assert.IsNotNull(result);
-            Assert.IsNull(result.Routes);
-            Assert.AreEqual(result.Error, ErrorMessages.EmptyCodes);
+            var response = await controller.GetRoute(TestConsts.ExistRouteSrcAirport, TestConsts.NotExistAirport);
+            var result = (ObjectResult)response;
+            Assert.AreEqual((int)HttpStatusCode.Conflict, result.StatusCode);
+            Assert.AreEqual(result.Value, ErrorMessages.NotValidSourceDestinationCode);
         }
 
         [Test]
-        public void GetRouteNotExistFromAirportTest()
+        public async Task GetRouteNotExistToAirportTest()
         {
-            var response = controller.GetRoute(TestConsts.ExistRouteSrcAirport, TestConsts.NotExistAirport);
-            Assert.IsNotNull(response);
-            Assert.IsNull(response.Exception);
-            Assert.IsNotNull(response.Result);
-            var result = response.Result;
-            Assert.IsNotNull(result);
-            Assert.IsNull(result.Routes);
-            Assert.AreEqual(result.Error, ErrorMessages.NotValidSourceDestinationCode);
+            var response = await controller.GetRoute(TestConsts.NotExistAirport, TestConsts.ExistRouteSrcAirport);
+            var result = (ObjectResult)response;
+            Assert.AreEqual((int)HttpStatusCode.Conflict, result.StatusCode);
+            Assert.AreEqual(result.Value, ErrorMessages.NotValidSourceAirportCode);
         }
 
         [Test]
-        public void GetRouteNotExistToAirportTest()
+        public async Task GetRouteExistAirportTest()
         {
-            var response = controller.GetRoute(TestConsts.NotExistAirport, TestConsts.ExistRouteSrcAirport);
-            Assert.IsNotNull(response);
-            Assert.IsNull(response.Exception);
-            Assert.IsNotNull(response.Result);
-            var result = response.Result;
-            Assert.IsNotNull(result);
-            Assert.IsNull(result.Routes);
-            Assert.AreEqual(result.Error, ErrorMessages.NotValidSourceAirportCode);
+            var response = await controller.GetRoute(TestConsts.ExistRouteSrcAirport, TestConsts.ExistRouteDestAirport);
+            var result = (ObjectResult)response;
+            Assert.AreEqual((int)HttpStatusCode.OK, result.StatusCode);
+            Assert.IsNotNull(result.Value);
+            var routes = (List<Route>)result.Value;
+            Assert.AreEqual(routes[0].SrcAirport, TestConsts.ExistRouteSrcAirport);
+            Assert.AreEqual(routes[routes.Count - 1].DestAirport, TestConsts.ExistRouteDestAirport);
         }
 
         [Test]
-        public void GetRouteExistAirportTest()
+        public async Task GetRouteNotExistAirportTest()
         {
-            var response = controller.GetRoute(TestConsts.ExistRouteSrcAirport, TestConsts.ExistRouteDestAirport);
-            Assert.IsNotNull(response);
-            Assert.IsNull(response.Exception);
-            var result = response.Result;
-            Assert.IsNotNull(result);
-            Assert.IsNull(result.Error);
-            Assert.IsNotNull(result.Routes);
-            Assert.AreEqual(result.Routes[0].SrcAirport, TestConsts.ExistRouteSrcAirport);
-            Assert.AreEqual(result.Routes[result.Routes.Count - 1].DestAirport, TestConsts.ExistRouteDestAirport);
+            var response = await controller.GetRoute(TestConsts.NotExistRouteSrcAirport, TestConsts.NotExistRouteDestAirport);
+            var result = (ObjectResult)response;
+            Assert.AreEqual((int)HttpStatusCode.OK, result.StatusCode);
+            Assert.IsNull(result.Value);
         }
 
         [Test]
-        public void GetRouteNotExistAirportTest()
+        public async Task GetRouteMultipleTransferTest()
         {
-            var response = controller.GetRoute(TestConsts.NotExistRouteSrcAirport, TestConsts.NotExistRouteDestAirport);
-            Assert.IsNotNull(response);
-            Assert.IsNull(response.Exception);
-            var result = response.Result;
-            Assert.IsNotNull(result);
-            Assert.IsNull(result.Error);
-            Assert.IsNull(result.Routes);
+            var response = await controller.GetRoute(TestConsts.MultipleTransferRouteSrcAirport1, TestConsts.MultipleTransferRouteDestAirport);
+            var result = (ObjectResult)response;
+            Assert.AreEqual((int)HttpStatusCode.OK, result.StatusCode);
+            Assert.IsNotNull(result.Value);
+            var routes = (List<Route>)result.Value;
+            Assert.AreEqual(TestConsts.MultipleTransferRouteSrcAirport1, routes[0].SrcAirport);
+            Assert.AreEqual(TestConsts.MultipleTransferRouteDestAirport, routes[routes.Count - 1].DestAirport);
+            Assert.True(routes.Count > 0);
         }
 
         [Test]
-        public void GetRouteMultipleTransferTest()
+        public async Task GetRouteMultipleTransferWithMaxTransferTest()
         {
-            var response = controller.GetRoute(TestConsts.MultipleTransferRouteSrcAirport1, TestConsts.MultipleTransferRouteDestAirport);
-            Assert.IsNotNull(response);
-            Assert.IsNull(response.Exception);
-            var result = response.Result;
-            Assert.IsNotNull(result);
-            Assert.IsNull(result.Error);
-            Assert.IsNotNull(result.Routes);
-            Assert.AreEqual(TestConsts.MultipleTransferRouteSrcAirport1, result.Routes[0].SrcAirport);
-            Assert.AreEqual(TestConsts.MultipleTransferRouteDestAirport, result.Routes[result.Routes.Count - 1].DestAirport);
-            Assert.True(result.Routes.Count > 0);
-        }
-
-        [Test]
-        public void GetRouteMultipleTransferWithMaxTransferTest()
-        {
-            var response = controller.GetRoute(TestConsts.MultipleTransferRouteMaxTransferCountSrcAirport1, TestConsts.MultipleTransferRouteMaxTransferCountDestAirport, 1);
-            Assert.IsNotNull(response);
-            Assert.IsNull(response.Exception);
-            var result = response.Result;
-            Assert.IsNotNull(result);
-            Assert.IsNull(result.Error);
-            Assert.IsNull(result.Routes);
+            var response = await controller.GetRoute(TestConsts.MultipleTransferRouteMaxTransferCountSrcAirport1, TestConsts.MultipleTransferRouteMaxTransferCountDestAirport, 1);
+            var result = (ObjectResult)response;
+            Assert.AreEqual((int)HttpStatusCode.OK, result.StatusCode);
+            Assert.IsNull(result.Value);
         }
 
         [Test]
@@ -233,11 +213,10 @@ namespace AirportRouteTest
         {
             controller.GetRoute(TestConsts.ExistRouteSrcAirport, TestConsts.ExistRouteDestAirport);
             var response = controller.StopRouteProcessing(TestConsts.ExistRouteSrcAirport, TestConsts.ExistRouteDestAirport);
-            Assert.IsNotNull(response);
-            var result = response;
+            var result = (ObjectResult)response;
             Assert.IsNotNull(result);
-            Assert.IsNull(result.Error);
-            Assert.IsTrue(result.Message.Equals(ErrorMessages.ProcessWasStoped) || result.Message.Equals(ErrorMessages.HandlingProcessNotFound));
+            Assert.IsNotNull(result.Value);
+            Assert.IsTrue(result.Value.Equals(ErrorMessages.ProcessWasStoped) || result.Value.Equals(ErrorMessages.HandlingProcessNotFound));
         }
     }
 }

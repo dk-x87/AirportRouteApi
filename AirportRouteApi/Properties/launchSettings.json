@@ -19,7 +19,7 @@
     },
     "AirportRouteApi": {
       "commandName": "Project",
-      "launchBrowser": true,
+      "launchBrowser": false,
       "launchUrl": "api/routes",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
