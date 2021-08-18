@@ -20,11 +20,11 @@ namespace AirportRouteApi.Models
             };
         }
 
-        public static Error GetServiceUnavailableResult(string message)
+        public static Error GetTooManyRequestsResult(string message)
         {
             return new Error()
             {
-                Code = HttpStatusCode.ServiceUnavailable,
+                Code = HttpStatusCode.TooManyRequests,
                 Message = message
             };
         }

@@ -86,3 +86,7 @@ AirportRouteTest/obj/project.assets.json
 AirportRouteApi/Logs/AirportRouteApi-20210809.txt
 AirportRouteApi/Logs/AirportRouteApi-20190531.txt
 AirportRouteApi/Logs/AirportRouteApi-20210808.txt
+AirportRouteTest/bin/Debug/netcoreapp2.1/nunit_random_seed.tmp
+.vs/AirportRouteApi/v16/TestStore/0/000.testlog
+.vs/AirportRouteApi/v16/TestStore/0/testlog.manifest
+.vs/AirportRouteApi/DesignTimeBuild/.dtbcache.v2

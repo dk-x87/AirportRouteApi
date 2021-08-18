@@ -35,7 +35,7 @@ namespace AirportRouteApi.BL.Implementations
             var toAirport = to.ToUpper();
             if (concurrentDictionary.Count >= maxConcurrentRequestsSettings)
             {
-                return new Responce<List<Route>>(Error.GetServiceUnavailableResult(ErrorMessages.ConcurrentRequestLimitExceeded));
+                return new Responce<List<Route>>(Error.GetTooManyRequestsResult(ErrorMessages.ConcurrentRequestLimitExceeded));
             }
             var tokenSource = new CancellationTokenSource();
             int hash = RouteHelper.GetHashCode(fromAirport, toAirport, userAgent, remoteAddress);
