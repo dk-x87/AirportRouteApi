@@ -1,4 +1,5 @@
-﻿using AirportRouteApi.Models;
+﻿using AirportRouteApi.Messages;
+using AirportRouteApi.Models;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Concurrent;
@@ -28,14 +29,14 @@ namespace AirportRouteApi.BL.Implementations
         {
             if (string.IsNullOrEmpty(from) || string.IsNullOrEmpty(to))
             {
-                return new Responce<List<Route>>(Error.GetConflictErrorResult(ErrorMessages.EmptyCodes));
+                return Responce<List<Route>>.Fault(Error.GetConflictErrorResult(ErrorMessages.EmptyCodes));
             }
 
             var fromAirport = from.ToUpper();
             var toAirport = to.ToUpper();
             if (concurrentDictionary.Count >= maxConcurrentRequestsSettings)
             {
-                return new Responce<List<Route>>(Error.GetTooManyRequestsResult(ErrorMessages.ConcurrentRequestLimitExceeded));
+                return Responce<List<Route>>.Fault(Error.GetTooManyRequestsResult(ErrorMessages.ConcurrentRequestLimitExceeded));
             }
             var tokenSource = new CancellationTokenSource();
             int hash = RouteHelper.GetHashCode(fromAirport, toAirport, userAgent, remoteAddress);
@@ -44,19 +45,19 @@ namespace AirportRouteApi.BL.Implementations
                 concurrentDictionary.TryAdd(hash, tokenSource);
                 if (!await apiClient.IsValidAirport(fromAirport, tokenSource.Token))
                 {
-                    return new Responce<List<Route>>(Error.GetConflictErrorResult(ErrorMessages.NotValidSourceAirportCode));
+                    return Responce<List<Route>>.Fault(Error.GetConflictErrorResult(ErrorMessages.NotValidSourceAirportCode));
                 }
                 if (!await apiClient.IsValidAirport(toAirport, tokenSource.Token))
                 {
-                    return new Responce<List<Route>>(Error.GetConflictErrorResult(ErrorMessages.NotValidSourceDestinationCode));
+                    return Responce<List<Route>>.Fault(Error.GetConflictErrorResult(ErrorMessages.NotValidSourceDestinationCode));
                 }
                 var routes = await apiClient.GetRoutesByAirports(fromAirport, toAirport, maxTransferCount == 0 ? maxTransferCountSettings : maxTransferCount, tokenSource.Token);
-                return new Responce<List<Route>>(routes);
+                return Responce<List<Route>>.Success(routes);
             }
             catch (Exception ex)
             {
                 logger.LogError(ex.Message, ex.StackTrace);
-                return new Responce<List<Route>>(Error.GetInnerErrorResult(ex));
+                return Responce<List<Route>>.Fault(Error.GetInnerErrorResult(ex));
             }
             finally
             {
@@ -68,7 +69,7 @@ namespace AirportRouteApi.BL.Implementations
         {
             if (string.IsNullOrEmpty(from) || string.IsNullOrEmpty(to))
             {
-                return new Responce<string>(Error.GetConflictErrorResult(ErrorMessages.EmptyCodes));
+                return Responce<string>.Fault(Error.GetConflictErrorResult(ErrorMessages.EmptyCodes));
             }
 
             CancellationTokenSource tokenSource = null;
@@ -84,13 +85,13 @@ namespace AirportRouteApi.BL.Implementations
                 }
 
                 return tokenExistsAndCanBeCancelled
-                    ? new Responce<string>(ErrorMessages.ProcessWasStoped)
-                    : new Responce<string>(Error.GetConflictErrorResult(ErrorMessages.HandlingProcessNotFound));
+                    ? Responce<string>.Success(SuccessMessages.ProcessWasStoped)
+                    : Responce<string>.Fault(Error.GetConflictErrorResult(ErrorMessages.HandlingProcessNotFound));
             }
             catch (Exception ex)
             {
                 logger.LogError(ex.Message, ex.StackTrace);
-                return new Responce<string>(Error.GetInnerErrorResult(ex));
+                return Responce<string>.Fault(Error.GetInnerErrorResult(ex));
             }
             finally
             {

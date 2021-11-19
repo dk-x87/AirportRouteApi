@@ -16,7 +16,7 @@ namespace AirportRouteApi.BL.Implementations
 
         public async Task<List<Route>> GetRoutesByAirports(string from, string to, int maxTransferCount, CancellationToken ct)
         {
-            await TrySearchAsync(from, to, maxTransferCount, ct);
+            var routes = await TrySearchAsync(from, to, maxTransferCount, ct);
             return routes.Count > 0 && routes[0].SrcAirport == from && routes[routes.Count - 1].DestAirport == to ? routes : null;
         }
 
@@ -27,43 +27,46 @@ namespace AirportRouteApi.BL.Implementations
         }
 
 
-        List<Route> routes = new List<Route>();
-        private async Task<Route> TrySearchAsync(string from, string to, int maxTransferCount, CancellationToken ct)
-        {
-            var listRoutes = await sender.GetDataForRoute(from, ct);
-            var choosed = listRoutes.Find(x => x.SrcAirport == from && x.DestAirport == to);
-            var route = (choosed != null && await IsActiveAirline(choosed.Airline, ct)) ? choosed : null;
-            if (route != null)
-            {
-                routes.Add(route);
-            }
-            else 
-            {
-                if (routes.Count < maxTransferCount)
-                {
-                    int count = 0;
-                    while (count <= listRoutes.Count - 1 && route == null)
-                    {
-                        if (listRoutes[count].DestAirport != to && await IsActiveAirline(listRoutes[count].Airline, ct))
-                        {
-                            routes.Add(listRoutes[count]);
-                            route = await TrySearchAsync(listRoutes[count].DestAirport, to, maxTransferCount, ct);
-                        }
-                        count++;
-                    }
-                }
-                else
-                {
-                    routes.RemoveAt(routes.Count - 1);
-                }
-            }
-            return route;
-        }
-
         private async Task<bool> IsActiveAirline(string alias, CancellationToken ct)
         {
             var airlines = await sender.GetDataForAirline(alias, ct);
             return airlines != null && airlines.Count > 0 && airlines.Find(x => x.Active) != null;
+        }
+
+        private async Task<List<Route>> TrySearchAsync(string from, string to, int maxTransferCount, CancellationToken ct)
+        {
+            List<Route> routes = new List<Route>();
+            var routesFromSource = await sender.GetDataForRoute(from, ct);
+            var sourceToDest = routesFromSource.Find(x => x.SrcAirport == from && x.DestAirport == to);
+            if (sourceToDest != null
+                && await IsValidAirport(sourceToDest.DestAirport, ct)
+                && await IsActiveAirline(sourceToDest.Airline, ct))
+            {
+                routes.Add(sourceToDest);
+            }
+            else
+            {
+                if (routes.Count < maxTransferCount)
+                {
+                    bool detected = false;
+                    int count = 0;
+                    while (count <= routesFromSource.Count - 1 && !detected)
+                    {
+                        if (await IsValidAirport(routesFromSource[count].DestAirport, ct) && await IsActiveAirline(routesFromSource[count].Airline, ct))
+                        {
+                            var tryRoutes = await TrySearchAsync(routesFromSource[count].DestAirport, to, maxTransferCount - 1, ct);
+                            if (tryRoutes.Count > 0)
+                            {
+                                routes.Add(routesFromSource[count]);
+                                routes.AddRange(tryRoutes);
+                                detected = true;
+                            }
+                        }
+                        count++;
+                    }
+                }
+            }
+            return routes;
         }
 
     }

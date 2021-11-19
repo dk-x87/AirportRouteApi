@@ -4,6 +4,7 @@ using System.Net;
 using System.Runtime.Serialization.Formatters.Binary;
 using AirportRouteApi.BL;
 using AirportRouteApi.BL.Implementations;
+using AirportRouteApi.Messages;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;

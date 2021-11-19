@@ -2,17 +2,18 @@
 {
     public class Responce<T>
     {
-        public T Data { get; set; }
-        public Error Error { get; set; }
+        public T Data { get; private set; }
+        public Error Error { get; private set; }
 
-        public Responce(T data)
+        public static Responce<T> Success(T data)
         {
-            Data = data;
+            return new Responce<T>() { Data = data};
         }
 
-        public Responce(Error error)
+        public static Responce<T> Fault(Error error)
         {
-            Error = error;
+            return new Responce<T>() { Error = error };
         }
+
     }
 }

@@ -2,6 +2,7 @@ using AirportRouteApi;
 using AirportRouteApi.BL;
 using AirportRouteApi.BL.Implementations;
 using AirportRouteApi.Controllers;
+using AirportRouteApi.Messages;
 using AirportRouteApi.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -142,7 +143,7 @@ namespace AirportRouteTest
             var result = (ObjectResult)response;
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Value);
-            Assert.IsTrue(result.Value.Equals(ErrorMessages.ProcessWasStoped) || result.Value.Equals(ErrorMessages.HandlingProcessNotFound));
+            Assert.IsTrue(result.Value.Equals(SuccessMessages.ProcessWasStoped) || result.Value.Equals(ErrorMessages.HandlingProcessNotFound));
         }
 
     }

@@ -42,7 +42,7 @@ namespace AirportRouteApi.BL.Implementations
             int count = 0;
             HttpClient client = new HttpClient();
             HttpResponseMessage response = null;
-            while ((response == null || !response.IsSuccessStatusCode) && count < maxRequestCount)
+            while ((response == null || !response.IsSuccessStatusCode) && count++ < maxRequestCount)
             {
                 response = await client.GetAsync(url, ct);
             }
