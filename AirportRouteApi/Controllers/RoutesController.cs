@@ -25,15 +25,13 @@ namespace AirportRouteApi.Controllers
             base.OnActionExecuting(context);
         }
 
-        [Route("GetRoute")]
         [HttpGet]
         public async Task<ActionResult> GetRoute(string from, string to, int maxTransferCount = 0)
         {
             return ProcessResponce(await requestsManager.TrySetTask(from, to, maxTransferCount, userAgent, remoteAddress));
         }
 
-        [Route("StopRouteProcessing")]
-        [HttpGet]
+        [HttpDelete]
         public ActionResult StopRouteProcessing(string from, string to)
         {
             return ProcessResponce(requestsManager.CancelTask(from, to, userAgent, remoteAddress));
